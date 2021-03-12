@@ -10,4 +10,4 @@ Custom preference cells among other things to improve your preferences.
 ## Other Guides Included
 | Guide | Description | Preview |
 | ----- | ----------- | ------- |
-| Remove & Insert Specifiers | Remove or insert specifiers based on other preference values | ![Preview](Remove%20%26%20Insert%20Specifiers/preview.webm) |
+| Remove & Insert Specifiers | Remove or insert specifiers based on other preference values | ![Preview](Remove%20%26%20Insert%20Specifiers/preview.gif) |
