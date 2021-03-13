@@ -5,7 +5,7 @@ Custom preference cells among other things to improve your preferences.
 | Cell Name | Description | Preview |
 | --------- | ----------- | ------- |
 | Labeled Slider Cell | Slider with label centered above it, also allowing custom values to be entered by tapping the value displayed | ![Preview](Labeled%20Slider%20Cell/preview.png=812x) |
-| Color Picker Cell | Color picker using iOS 14's UIColorPickerViewController | ![Preview](Color%Picker%20Cell/preview.png=812x) |
+| Color Picker Cell | Color picker using iOS 14's UIColorPickerViewController | <img src="/Color Picker Cell/preview.png" alt="Preview" width="812"/> | 
 
 ## Other Guides Included
 | Guide | Description | Preview |
