@@ -11,3 +11,4 @@ Custom preference cells among other things to improve your preferences.
 | Guide Type | Description | Preview |
 | ----- | ----------- | ------- |
 | Remove & Insert Specifiers | Remove or insert specifiers based on other preference values. | <img src="./Remove & Insert Specifiers/preview.gif" alt="Preview" width="488"> |
+| Animated Title View | Title label in the navigation bar that 'slides up' when the user scrolls down. | <img src="./Animated Title View/preview.gif" alt="Preview" width="488"> |
