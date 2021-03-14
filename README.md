@@ -15,7 +15,7 @@ Custom preference cells among other things to improve your preferences.
 ## Other Guides Included
 | Guide&nbsp;Type | Description | Preview |
 | --------------- | ----------- | ------- |
-| [Animated Title View](https://github.com/LacertosusRepo/Preference-Cell-Examples/tree/main/Animated%20Table%20View) | Title label in the navigation bar that 'slides up' when the user scrolls down. | <img src="./Animated Title View/preview.gif" alt="Preview" width="488"> |
+| [Animated Title View](https://github.com/LacertosusRepo/Preference-Cell-Examples/tree/main/Animated%20Title%20View) | Title label in the navigation bar that 'slides up' when the user scrolls down. | <img src="./Animated Title View/preview.gif" alt="Preview" width="488"> |
 | [Dynamic Specifiers](https://github.com/LacertosusRepo/Preference-Cell-Examples/tree/main/Dynamic%20Specifiers) | Remove or insert specifiers based on other preference values. | <img src="./Dynamic Specifiers/preview.gif" alt="Preview" width="488"> |
 
 <!-- Preview size: 886x216 -->
