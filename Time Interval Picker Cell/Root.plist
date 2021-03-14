@@ -1,0 +1,16 @@
+<dict>
+	<key>cell</key>
+	<string>PSButtonCell</string>
+	<key>cellClass</key>
+	<string>XXXTimeIntervalPickerCell</string>
+	<key>defaults</key>
+	<string>com.company.name</string>
+	<key>default</key>
+	<integer>120</integer>						#Set the default time interval in seconds
+	<key>key</key>
+	<string>key</string>
+	<key>label</key>
+	<string>Set Time</string>					#Label will be used as header for cell
+	<key>PostNotification</key>
+	<string>com.company.name/ReloadPrefs</string>
+</dict>
