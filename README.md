@@ -1,5 +1,5 @@
-## Preference Cell Examples
-Custom preference cells among other things to improve your preferences.
+# Preference Cell Examples
+*Custom preference cells among other things to improve your preferences.*
 
 ## Table of Contents
 | Preference&nbsp;Cell&nbsp;Type | Description | Preview |
