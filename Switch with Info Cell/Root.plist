@@ -1,0 +1,20 @@
+<dict>
+	<key>cell</key>
+	<string>PSSwitchCell</string>
+	<key>cellClass</key>
+	<string>XXXSwitchWithInfoCell</string>
+	<key>infoTitle</key>
+	<string>Info Title</string>       #Info alert title, if this key is missing the label for the cell will be used. For no title add but use an empty string.
+	<key>infoMessage</key>
+	<string>Info Message</string>     #Info alert message
+	<key>default</key>
+	<true/>
+	<key>defaults</key>
+	<string>com.company.name</string>
+	<key>key</key>
+	<string>key</string>
+	<key>label</key>
+	<string>Switch Label</string>
+	<key>PostNotification</key>
+	<string>com.company.name/ReloadPrefs</string>
+</dict>
