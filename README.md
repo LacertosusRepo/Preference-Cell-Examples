@@ -4,7 +4,7 @@ Custom preference cells among other things to improve your preferences.
 ## Table of Contents
 | Preference&nbsp;Cell&nbsp;Type | Description | Preview |
 | ------------------------------ | ----------- | ------- |
-| [Color Picker Cell](https://github.com/LacertosusRepo/Preference-Cell-Examples/tree/main/Color%20Picker%20Cell) | Color picker using iOS 14's UIColorPickerViewController. | <img src="./Color Picker Cell/preview.png" alt="Preview"> |
+| [Color Picker Cell](https://github.com/LacertosusRepo/Preference-Cell-Examples/tree/main/Color%20Picker%20Cell) | Color picker using iOS 14's UIColorPickerViewController. | <img src="./Color Picker Cell/preview.png" alt="Preview" style="border-radius:50%"> |
 | [Labeled Slider Cell](https://github.com/LacertosusRepo/Preference-Cell-Examples/tree/main/Labeled%20Slider%20Cell) | Slider with label centered above it, also allowing custom values to be entered by tapping the value displayed. | <img src="./Labeled Slider Cell/preview.png" alt="Preview"> |
 | [Segment Table Image Cell](https://github.com/LacertosusRepo/Preference-Cell-Examples/tree/main/Segment%20Table%20Image%20Cell) | PSSegmentCell displaying images instead of strings. | <img src="./Segment Table Image Cell/preview.png" alt="Preview"> |
 | [Style Picker Cell](https://github.com/LacertosusRepo/Preference-Cell-Examples/tree/main/Style%20Picker%20Cell) | Style picker for options, similar to Apple's light/dark mode selector. | <img src="./Style Picker Cell/preview.png" alt="Preview"> |
