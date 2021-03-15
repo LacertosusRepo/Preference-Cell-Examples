@@ -8,6 +8,8 @@
 
   -(instancetype)initWithTitle:(NSString *)title minimumScrollOffsetRequired:(CGFloat)minimumOffset {
     if([super init]) {
+      self.superview.clipsToBounds = YES;
+      
       _titleLabel = [[UILabel alloc] init];
       _titleLabel.text = title;
       _titleLabel.textAlignment = NSTextAlignmentCenter;
@@ -23,7 +25,7 @@
         [self.heightAnchor constraintEqualToAnchor:_titleLabel.heightAnchor],
 
         [_titleLabel.centerXAnchor constraintEqualToAnchor:self.centerXAnchor],
-        _yConstraint = [_titleLabel.centerYAnchor constraintEqualToAnchor:self.centerYAnchor constant:50],
+        _yConstraint = [_titleLabel.centerYAnchor constraintEqualToAnchor:self.centerYAnchor constant:100],
       ]];
 
       _minimumOffsetRequired = minimumOffset;
@@ -33,7 +35,7 @@
   }
 
   -(void)adjustLabelPositionToScrollOffset:(CGFloat)offset {
-    CGFloat adjustment = 50 - (offset - _minimumOffsetRequired);
+    CGFloat adjustment = 100 - (offset - _minimumOffsetRequired);
     if(offset >= _minimumOffsetRequired) {
       if(adjustment <= 0) {
         _yConstraint.constant = 0;
@@ -42,7 +44,7 @@
       }
 
     } else {
-      _yConstraint.constant = -50;
+      _yConstraint.constant = -100;
     }
   }
 @end
