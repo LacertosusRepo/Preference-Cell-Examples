@@ -64,11 +64,12 @@
 
 ```objc
 -(void)updateSpecifierVisibility:(BOOL)animated {
-	//Get your preferences, adjust this to however you read your preferences
-	NSDictionary *preferences = [NSDictionary dictionaryWithContentsOfFile:@"path/to/com.company.tweak.plist"];
-
+	//Get value of switch specifier
+	PSSpecifier *switchSpecifier = [self specifierForID:@"SWITCH_ID"];
+	BOOL switchValue = [self readPreferenceValue:switchSpecifier];
+	
 	//Check if our switch is set to NO, then remove the specifier
-	if(![preferences[@"switchKey"] boolValue]) {
+	if(!switchValue) {
 		[self removeSpecifier:self.savedSpecifiers[@"CELL_ID"] animated:animated];
 
 	//If the switch is set to YES, we check if the specifier exists then insert it after the switch using the SWITCH_ID
@@ -115,6 +116,7 @@
 ```objc
 @interface PSListController (Private)
 -(BOOL)containsSpecifier:(PSSpecifier *)arg1;
+-(id)readPreferenceValue:(PSSpecifier *)arg1;
 @end
 ```
 
