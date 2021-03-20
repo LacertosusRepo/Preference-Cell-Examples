@@ -26,9 +26,10 @@
 	}
 
 	-(void)toggleSpecifiersVisibility:(BOOL)animated {
-		NSDictionary *preferences = [NSDictionary dictionaryWithContentsOfFile:@"path/to/com.company.tweak.plist"];
+		PSSpecifier *switchSpecifier = [self specifierForID:@"SWITCH_ID"];
+		BOOL switchValue = [self readPreferenceValue:switchSpecifier];
 				
-		if(![preferences[@"switchKey"] boolValue]) {
+		if(!switchValue) {
 			[self removeSpecifier:self.savedSpecifiers[@"CELL_ID"] animated:animated];
 		} else if(![self containsSpecifier:self.savedSpecifiers[@"CELL_ID"]]) {
 			[self insertSpecifier:self.savedSpecifiers[@"CELL_ID"] afterSpecifierID:@"SWITCH_ID" animated:animated];
