@@ -72,7 +72,7 @@
 -(void)updateSpecifierVisibility:(BOOL)animated {
 	//Get value of switch specifier
 	PSSpecifier *switchSpecifier = [self specifierForID:@"SWITCH_ID"];
-	BOOL switchValue = [self readPreferenceValue:switchSpecifier];
+	BOOL switchValue = [[self readPreferenceValue:switchSpecifier] boolValue];
 	
 	//Check if our switch is set to NO, then remove the specifier
 	if(!switchValue) {
