@@ -1,6 +1,6 @@
 ## In this example we will hide a cell when a switch is set to NO.
 
-1. Add a NSMutableDictionary property named savedSpecifiers to your XXXRootListController.h, that is where we will store our specifiers that will be hidden:
+1. Add a `NSMutableDictionary` property named `savedSpecifiers` to your RootListController's interface, that is where we will store our specifiers that will be hidden and shown:
 
 ```objc
 @interface XXXRootListController : PSListController
@@ -8,9 +8,15 @@
 @end
 ```
 
-2. Then in your Root.plist, add the ID property to the specifiers you intend to hide & show. Also add an ID to whatever specifiers are directly above the hideable specifiers so you can reinsert the specifiers underneath easily. Example *button cell* with a *switch cell*:
+2. Then in your `Root.plist`, add the ID property to the specifier(s) you intend to toggle along with the specifier(s) who's value(s) will determine if a specifier should be hidden or shown. Also add an ID to whatever specifiers are directly above the hideable specifiers so you can reinsert the specifiers underneath easily. Example *button cell* with a *switch cell*:
 
 ```xml
+<dict>
+	<key>cell</key>
+	<string>PSGroupCell</string>
+	<key>label</key>
+	<string>My Cells</string>
+</dict>
 <dict>
 	<key>cell</key>
 	<string>PSSwitchCell</string>
@@ -44,7 +50,7 @@
 ```objc
 -(NSArray *)specifiers {
 	if(!specifiers) {
-		_specifiers = ...;  //Leave this part as normal
+		_specifiers = ...;  //Leave this as usual
 
 		//In this array you should add the IDs of all the specifiers you are going to hide & show.
 		//Do not include the IDs of the cells you will reinsert them under.
@@ -60,7 +66,7 @@
 }
 ```
 
-4. Next add a new method to your XXXRootListController.m. `-updateSpecifierVisibility:` will hide or show any specifiers whenever we call the method:
+4. Next add a new method to your RootListController's implementation. `-updateSpecifierVisibility:` will hide or show any specifiers whenever we call the method:
 
 ```objc
 -(void)updateSpecifierVisibility:(BOOL)animated {
@@ -111,7 +117,7 @@
 ```
 
 # Additional Notes:
-- You might need to declare `-containsSpecifier:` depending on your SDK:
+- You might need to declare `-containsSpecifier:` or `-readPreferenceValue:` depending on your SDK:
 
 ```objc
 @interface PSListController (Private)
@@ -120,7 +126,7 @@
 @end
 ```
 
-- Need to remove/insert multiple specifiers? Use these methods instead as they take an array or specifiers to remove/insert:
+- Need to remove/insert multiple specifiers? Use these methods instead as they take an array of specifiers to remove/insert:
 ```objc
 -(void)removeContiguousSpecifiers:(NSArray *)arg1 animated:(BOOL)arg2;
 -(void)insertContiguousSpecifiers:(NSArray *)arg1 afterSpecifierID:(id)arg2 animated:(BOOL)arg3;
