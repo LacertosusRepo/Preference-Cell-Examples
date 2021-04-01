@@ -25,7 +25,7 @@
 		[self toggleSpecifiersVisibility:NO];
 	}
 
-	-(void)toggleSpecifiersVisibility:(BOOL)animated {
+	-(void)updateSpecifierVisibility:(BOOL)animated {
 		PSSpecifier *switchSpecifier = [self specifierForID:@"SWITCH_ID"];
 		BOOL switchValue = [self readPreferenceValue:switchSpecifier];
 				
