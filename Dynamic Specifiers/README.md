@@ -8,7 +8,7 @@
 @end
 ```
 
-2. Then in your `Root.plist`, add the ID property to the specifier(s) you intend to toggle along with the specifier(s) who's value(s) will determine if a specifier should be hidden or shown. Also add an ID to whatever specifiers are directly above the hideable specifiers so you can reinsert the specifiers underneath easily. Example *button cell* with a *switch cell*:
+2. Then in your `Root.plist`, add the ID property to the specifier(s) you intend to toggle along with the specifier(s) who's value(s) will determine if a specifier should be hidden or shown. The ID should be unique for each cell. Also add an ID to whatever specifiers are directly above the hideable specifiers so you can reinsert the specifiers underneath easily. Example *button cell* with a *switch cell*:
 
 ```xml
 <dict>
