@@ -132,5 +132,5 @@
 -(void)insertContiguousSpecifiers:(NSArray *)arg1 afterSpecifierID:(id)arg2 animated:(BOOL)arg3;
 ```
 
-#Know Issue
+# Know Issue
 - Removed cells are hidden but not completely deallocated.
