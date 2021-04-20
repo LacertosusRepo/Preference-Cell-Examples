@@ -131,3 +131,6 @@
 -(void)removeContiguousSpecifiers:(NSArray *)arg1 animated:(BOOL)arg2;
 -(void)insertContiguousSpecifiers:(NSArray *)arg1 afterSpecifierID:(id)arg2 animated:(BOOL)arg3;
 ```
+
+#Know Issue
+- Removed cells are hidden but not completely deallocated.
