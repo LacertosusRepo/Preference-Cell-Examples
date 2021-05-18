@@ -19,6 +19,7 @@
 | --------------- | ----------- | ------- |
 | [Animated Title View](https://github.com/LacertosusRepo/Preference-Cell-Examples/tree/main/Animated%20Title%20View) | Title label in the navigation bar that 'slides up' when the user scrolls down. | <img src="./Animated Title View/preview.gif" alt="Preview" width="488"> |
 | [Dynamic Specifiers](https://github.com/LacertosusRepo/Preference-Cell-Examples/tree/main/Dynamic%20Specifiers) | Remove or insert specifiers based on other preference values. | <img src="./Dynamic Specifiers/preview.gif" alt="Preview" width="488"> |
+| [Footer Hyperlink](https://github.com/LacertosusRepo/Preference-Cell-Examples/tree/main/Footer%20Hyperlink) | Insert a hyperlink in your footer text. | <img src="./Footer Hyperlink/preview.png" alt="Preview"> |
 
 <!-- Preview size: 886x216 -->
 <!-- | [EXAMPLE](https://github.com/LacertosusRepo/Preference-Cell-Examples/tree/main/) | DESCRIPTION | <img src="./EXAMPLE/preview.gif" alt="Preview" width="488"> | -->
