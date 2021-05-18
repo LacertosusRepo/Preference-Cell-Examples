@@ -34,7 +34,7 @@
 }
 ```
 
-3. You might notice the link doesn't do anything in its current state. We need to set the target which unfortunately cannot be done from the PList. We need to set the target at runtime in the specifiers method of your RootListController:
+3. You might notice the link doesn't do anything in its current state. We need to set the target which unfortunately cannot be done from the PList. Finally, we need to set the target at runtime in the specifiers method of your RootListController:
 
 ```objc
 -(NSArray *)specifiers {
@@ -50,8 +50,6 @@
 }
 ```
 
-4. Done!
-
 ## Displaying the Link in your Preferences Pane
 
 Don't like the link opening another app? You can use `SFSafariViewController` to display the URL in a Safari window within your preferences window.
@@ -65,7 +63,7 @@ Don't like the link opening another app? You can use `SFSafariViewController` to
 @end
 ```
 
-2. In your `footerHyperlinkAction` method, create an instance of `SFSafariViewController`, set the delegate, and present the view controller:
+2. Finally, in your `footerHyperlinkAction` method create an instance of `SFSafariViewController`, set the delegate, and present the view controller:
 
 ```objc
 -(void)linkTapped:(PSFooterHyperlinkView *)footerHyperlinkView {
@@ -74,5 +72,3 @@ Don't like the link opening another app? You can use `SFSafariViewController` to
 	[self presentViewController:safariViewController animated:YES completion:nil];
 }
 ```
-
-5. Done!
