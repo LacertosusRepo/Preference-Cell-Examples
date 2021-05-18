@@ -1,0 +1,14 @@
+<dict>
+ 	<key>cell</key>
+ 	<string>PSGroupCell</string>
+ 	<key>footerCellClass</key>
+ 	<string>PSFooterHyperlinkView</string>
+ 	<key>headerFooterHyperlinkButtonTitle</key>
+ 	<string>This is a test footer with a link. Tap here.</string>
+ 	<key>footerHyperlinkRange</key>
+ 	<string>{35, 8}</string>
+ 	<key>footerHyperlinkAction</key>
+ 	<string>linkTapped:</string>
+	<key>id</key>
+	<string>UNIQUE_FOOTER_HYPERLINK</string>
+</dict>
