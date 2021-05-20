@@ -9,7 +9,11 @@
 		UILabel *titleLabel = [[UILabel alloc] init];
 		titleLabel.text = title;
 		titleLabel.textAlignment = NSTextAlignmentCenter;
-		titleLabel.textColor = [UIColor whiteColor];
+		if (@available(iOS 13.0, *)) {
+			titleLabel.textColor = [UIColor labelColor];
+		} else {
+			titleLabel.textColor = [UIColor blackColor];
+		}
 		titleLabel.font = [UIFont systemFontOfSize:[UIFont labelFontSize] weight:UIFontWeightSemibold];
 		titleLabel.translatesAutoresizingMaskIntoConstraints = NO;
 		[titleLabel sizeToFit];

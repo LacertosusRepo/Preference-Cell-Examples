@@ -2,28 +2,55 @@
 
 @implementation UIColor (SymbolsLinkCell)
 
-+ (UIColor *)customDynamicColorWithLightColor:(id)lightColor darkColor:(id)darkColor {
-    if ((![lightColor isKindOfClass:UIColor.class] && ![lightColor isKindOfClass:NSString.class]) || 
-        (![darkColor isKindOfClass:UIColor.class] && ![darkColor isKindOfClass:NSString.class])) {
-        NSLog(@"[%@] Incorrect arguments, returning nil", NSStringFromSelector(_cmd));
-        return nil;
++ (UIColor *)systemColorFromString:(NSString *)stringColor {
+    if ([stringColor containsString:@"blue"]) {
+        return [UIColor systemBlueColor];
+    } else if ([stringColor containsString:@"green"]) {
+        return [UIColor systemGreenColor];
+    } else if ([stringColor containsString:@"indigo"]) {
+        return [UIColor systemIndigoColor];
+    } else if ([stringColor containsString:@"orange"]) {
+        return [UIColor systemOrangeColor];
+    } else if ([stringColor containsString:@"pink"]) {
+        return [UIColor systemPinkColor];
+    } else if ([stringColor containsString:@"purple"]) {
+        return [UIColor systemPurpleColor];
+    } else if ([stringColor containsString:@"red"]) {
+        return [UIColor systemRedColor];
+    } else if ([stringColor containsString:@"teal"]) {
+        return [UIColor systemTealColor];
+    } else if ([stringColor containsString:@"yellow"]) {
+        return [UIColor systemYellowColor];
+    } else if ([stringColor containsString:@"gray2"]) {
+        return [UIColor systemGray2Color];
+    } else if ([stringColor containsString:@"gray3"]) {
+        return [UIColor systemGray3Color];
+    } else if ([stringColor containsString:@"gray4"]) {
+        return [UIColor systemGray4Color];
+    } else if ([stringColor containsString:@"gray5"]) {
+        return [UIColor systemGray5Color];
+    } else if ([stringColor containsString:@"gray6"]) {
+        return [UIColor systemGray6Color];
+    } else if ([stringColor containsString:@"gray"]) {
+        return [UIColor systemGrayColor];
     }
-
-    UIColor *light = [lightColor isKindOfClass:UIColor.class] ? lightColor : [self.class colorFromHexString:lightColor];
-    UIColor *dark = [darkColor isKindOfClass:UIColor.class] ? darkColor : [self.class colorFromHexString:darkColor];
-
-    return [UIColor colorWithDynamicProvider:^UIColor * _Nonnull(UITraitCollection * _Nonnull traits) {
-        return traits.userInterfaceStyle == UIUserInterfaceStyleLight ? light : dark;
-    }];
+    return nil;
 }
 
 // https://stackoverflow.com/a/12397366/12070367
 + (UIColor *)colorFromHexString:(NSString *)hex {
+    hex = [hex stringByReplacingOccurrencesOfString:@"#" withString:@""];
+    NSCharacterSet *hexChars = [[NSCharacterSet characterSetWithCharactersInString:@"0123456789ABCDEF"] invertedSet];
+    if ([[hex uppercaseString] rangeOfCharacterFromSet:hexChars].location != NSNotFound) {
+        NSLog(@"[%@] Argument is not a valid hexadecimal color, returning", NSStringFromSelector(_cmd));
+        return nil;
+    }
+
     unsigned intValue = 0;
-    [[NSScanner scannerWithString:[hex stringByReplacingOccurrencesOfString:@"#" withString:@""]] scanHexInt:&intValue];
+    [[NSScanner scannerWithString:hex] scanHexInt:&intValue];
     return [UIColor colorWithRed:((intValue & 0xFF0000) >> 16) / 255.0
                            green:((intValue & 0xFF00) >> 8) / 255.0
-                           blue:(intValue & 0xFF) / 255.0
+                            blue:(intValue & 0xFF) / 255.0
                            alpha:1.0];
 }
 
@@ -34,11 +61,13 @@
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier specifier:(PSSpecifier *)specifier {
     if (self = [super initWithStyle:style reuseIdentifier:reuseIdentifier specifier:specifier]) {
         if (@available(iOS 13.0, *)) {
+            // Checking availability and presence of icon property
             if (!specifier.properties[@"icon"]) {
                 NSLog(@"[%@ %p] No icon found, falling back to default behavior", NSStringFromClass(self.class), self);
                 return self;
             }
             
+            // Applying SF Symbol
             if ((self.symbolsImage = [UIImage systemImageNamed:specifier.properties[@"icon"]])) {
                 NSLog(@"[%@ %p] Applied SF Symbol: %@", NSStringFromClass(self.class), self, specifier.properties[@"icon"]);
             } else {
@@ -46,100 +75,64 @@
                 return self;
             }
 
+            CGFloat pointSize = specifier.properties[@"size"] ? [specifier.properties[@"size"] floatValue] : 29.f;
+
+            // Setting custom weight if requested
             if (specifier.properties[@"weight"]) {
-                NSString *weight = [specifier.properties[@"weight"] lowercaseString];
-                UIImageConfiguration *config;
-                if ([weight isEqualToString:@"ultralight"]) {
-                    config = [UIImageSymbolConfiguration configurationWithWeight:UIImageSymbolWeightUltraLight];
-                } else if ([weight isEqualToString:@"thin"]) {
-                    config = [UIImageSymbolConfiguration configurationWithWeight:UIImageSymbolWeightThin];
-                } else if ([weight isEqualToString:@"light"]) {
-                    config = [UIImageSymbolConfiguration configurationWithWeight:UIImageSymbolWeightLight];
-                } else if ([weight isEqualToString:@"regular"]) {
-                    config = [UIImageSymbolConfiguration configurationWithWeight:UIImageSymbolWeightRegular];
-                } else if ([weight isEqualToString:@"medium"]) {
-                    config = [UIImageSymbolConfiguration configurationWithWeight:UIImageSymbolWeightMedium];
-                } else if ([weight isEqualToString:@"semibold"]) {
-                    config = [UIImageSymbolConfiguration configurationWithWeight:UIImageSymbolWeightSemibold];
-                } else if ([weight isEqualToString:@"bold"]) {
-                    config = [UIImageSymbolConfiguration configurationWithWeight:UIImageSymbolWeightBold];
-                } else if ([weight isEqualToString:@"heavy"]) {
-                    config = [UIImageSymbolConfiguration configurationWithWeight:UIImageSymbolWeightHeavy];
-                } else if ([weight isEqualToString:@"black"]) {
-                    config = [UIImageSymbolConfiguration configurationWithWeight:UIImageSymbolWeightBlack];
+                NSString *weightString = [specifier.properties[@"weight"] lowercaseString];
+                UIImageSymbolWeight weight;
+                if ([weightString isEqualToString:@"ultralight"]) {
+                    weight = UIImageSymbolWeightUltraLight;
+                } else if ([weightString isEqualToString:@"thin"]) {
+                    weight = UIImageSymbolWeightThin;
+                } else if ([weightString isEqualToString:@"light"]) {
+                    weight = UIImageSymbolWeightLight;
+                } else if ([weightString isEqualToString:@"regular"]) {
+                    weight = UIImageSymbolWeightRegular;
+                } else if ([weightString isEqualToString:@"medium"]) {
+                    weight = UIImageSymbolWeightMedium;
+                } else if ([weightString isEqualToString:@"semibold"]) {
+                    weight = UIImageSymbolWeightSemibold;
+                } else if ([weightString isEqualToString:@"bold"]) {
+                    weight = UIImageSymbolWeightBold;
+                } else if ([weightString isEqualToString:@"heavy"]) {
+                    weight = UIImageSymbolWeightHeavy;
+                } else if ([weightString isEqualToString:@"black"]) {
+                    weight = UIImageSymbolWeightBlack;
                 } else {
-                    config = [UIImageSymbolConfiguration configurationWithWeight:UIImageSymbolWeightUnspecified];
+                    weight = UIImageSymbolWeightUnspecified;
                 }
+
+                UIImageSymbolConfiguration *config = [UIImageSymbolConfiguration configurationWithPointSize:pointSize weight:weight scale:UIImageSymbolScaleSmall];
                 self.symbolsImage = [self.symbolsImage imageWithConfiguration:config];
-                NSLog(@"[%@ %p] Applied weight configuration from weight \"%@\"", NSStringFromClass(self.class), self, weight);
-            }
-
-            if (specifier.properties[@"size"]) { // in px, modifies the largest side but keeps aspect ratio
-                CGFloat biggestSide = [specifier.properties[@"size"] floatValue];
-
-                CGSize actualSize = self.symbolsImage.size;
-                CGSize newSize = CGSizeZero;
-                if (actualSize.width == actualSize.height) {
-                    newSize.width = (biggestSide / actualSize.width) * actualSize.width;
-                    newSize.height = (biggestSide / actualSize.height) * actualSize.height;
-                } else if (actualSize.width > actualSize.height) {
-                    newSize.width = (biggestSide / actualSize.width) * actualSize.width;
-                    newSize.height = (biggestSide / actualSize.width) * actualSize.height;
-                } else {
-                    newSize.width = (biggestSide / actualSize.height) * actualSize.width;
-                    newSize.height = (biggestSide / actualSize.height) * actualSize.height;
-                }
-
-                UIImage *imageCopy = [self.symbolsImage copy];
-                UIGraphicsBeginImageContextWithOptions(newSize, NO, 0);
-                [imageCopy drawInRect:CGRectMake(0, 0, newSize.width, newSize.height)];
-                self.symbolsImage = UIGraphicsGetImageFromCurrentImageContext();
-                UIGraphicsEndImageContext();
-                NSLog(@"[%@ %p] Resizing done, symbol is now %.1f x %.1f", NSStringFromClass(self.class), self, self.symbolsImage.size.width, self.symbolsImage.size.height);
+                NSLog(@"[%@ %p] Applied weight configuration from weight \"%@\" and size %.f", NSStringFromClass(self.class), self, weightString, pointSize);
+            } else {
+                UIImageSymbolConfiguration *config = [UIImageSymbolConfiguration configurationWithPointSize:pointSize weight:UIImageSymbolWeightUnspecified scale:UIImageSymbolScaleSmall];
+                self.symbolsImage = [self.symbolsImage imageWithConfiguration:config];
+                NSLog(@"[%@ %p] Applied size configuration with size %.f", NSStringFromClass(self.class), self, pointSize);
             }
             
-            if (specifier.properties[@"color"]) { // hex or system color
-                NSString *color = [specifier.properties[@"color"] lowercaseString];
-                UIColor *chosenColor;
-                if ([color containsString:@"blue"]) {
-                    chosenColor = [UIColor systemBlueColor];
-                } else if ([color containsString:@"green"]) {
-                    chosenColor = [UIColor systemGreenColor];
-                } else if ([color containsString:@"indigo"]) {
-                    chosenColor = [UIColor systemIndigoColor];
-                } else if ([color containsString:@"orange"]) {
-                    chosenColor = [UIColor systemOrangeColor];
-                } else if ([color containsString:@"pink"]) {
-                    chosenColor = [UIColor systemPinkColor];
-                } else if ([color containsString:@"purple"]) {
-                    chosenColor = [UIColor systemPurpleColor];
-                } else if ([color containsString:@"red"]) {
-                    chosenColor = [UIColor systemRedColor];
-                } else if ([color containsString:@"teal"]) {
-                    chosenColor = [UIColor systemTealColor];
-                } else if ([color containsString:@"yellow"]) {
-                    chosenColor = [UIColor systemYellowColor];
-                } else if ([color containsString:@"gray2"]) {
-                    chosenColor = [UIColor systemGray2Color];
-                } else if ([color containsString:@"gray3"]) {
-                    chosenColor = [UIColor systemGray3Color];
-                } else if ([color containsString:@"gray4"]) {
-                    chosenColor = [UIColor systemGray4Color];
-                } else if ([color containsString:@"gray5"]) {
-                    chosenColor = [UIColor systemGray5Color];
-                } else if ([color containsString:@"gray6"]) {
-                    chosenColor = [UIColor systemGray6Color];
-                } else if ([color containsString:@"gray"]) {
-                    chosenColor = [UIColor systemGrayColor];
-                } else { // hex
-                    NSString *darkString = specifier.properties[@"darkColor"] ?: color;
-                    chosenColor = [UIColor customDynamicColorWithLightColor:color darkColor:darkString];
+            // Setting custom color if requested
+            if (specifier.properties[@"color"]) {
+                UIColor *finalColor = nil;
+
+                NSString *stringColor = [specifier.properties[@"color"] lowercaseString];
+                UIColor *color = [UIColor systemColorFromString:stringColor] ?: [UIColor colorFromHexString:stringColor];
+                if (color) {
+                    if (specifier.properties[@"darkColor"]) {
+                        NSString *stringDarkColor = [specifier.properties[@"darkColor"] lowercaseString];
+                        UIColor *darkColor = [UIColor systemColorFromString:stringDarkColor] ?: [UIColor colorFromHexString:stringDarkColor];
+                        finalColor = [UIColor colorWithDynamicProvider:^UIColor * (UITraitCollection *traits) {
+                            return traits.userInterfaceStyle == UIUserInterfaceStyleLight ? color : darkColor;
+                        }];
+                    } else {
+                        finalColor = color;
+                    }
                 }
 
-                if (chosenColor) {
-                    self.symbolsImage = [self.symbolsImage imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-                    self.customColor = chosenColor;
-                    NSLog(@"[%@ %p] Color changed, now %@", NSStringFromClass(self.class), self, [[CIColor colorWithCGColor:chosenColor.CGColor] stringRepresentation]);
+                if (finalColor) {
+                    self.symbolsImage = [self.symbolsImage imageWithTintColor:finalColor renderingMode:UIImageRenderingModeAlwaysOriginal];
+                    NSLog(@"[%@ %p] Color changed, now %@", NSStringFromClass(self.class), self, [[CIColor colorWithCGColor:finalColor.CGColor] stringRepresentation]);
                 } else {
                     NSLog(@"[%@ %p] Error when changing color (color: %@, darkColor: %@)", NSStringFromClass(self.class), self, color, specifier.properties[@"darkColor"]);
                 }
@@ -155,7 +148,6 @@
 
     if (self.imageView && self.symbolsImage && self.imageView.image != self.symbolsImage) {
         self.imageView.image = self.symbolsImage;
-        if (self.customColor) self.imageView.tintColor = self.customColor;
     }
 }
 
