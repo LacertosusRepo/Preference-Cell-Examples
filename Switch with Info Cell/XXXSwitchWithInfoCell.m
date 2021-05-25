@@ -37,7 +37,7 @@
     [rootViewController presentViewController:infoAlert animated:YES completion:nil];
   }
 
-    //Tint label
+    //Tint info button
   -(void)tintColorDidChange {
     [super tintColorDidChange];
 

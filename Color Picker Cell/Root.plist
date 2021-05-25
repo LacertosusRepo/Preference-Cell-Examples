@@ -1,20 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
 <dict>
-	<key>cell</key>
-	<string>PSButtonCell</string>
-	<key>cellClass</key>
-	<string>XXXColorPickerCell</string>
-	<key>fallbackHex</key>        #This cell supports both of the hex formatting styles '#RRGGBBAA'
-	<string>#FFFFFF:100</string>  #and '#RRGGBB:AA', but saves as only '#RRGGBBAA'
-	<key>supportsAlpha</key>      #Enable or disable Alpha
-	<true/>
-	<key>defaults</key>
-	<string>com.company.tweak</string>
-	<key>key</key>
-	<string>key</string>
-	<key>default</key>
-	<string>#000000:80</string>
-	<key>label</key>
-	<string>Color Picker</string>
-	<key>PostNotification</key>
-	<string>com.company.tweak/ReloadPrefs</string>
+	<key>items</key>
+	<array>
+		<dict>
+			<key>cell</key>
+			<string>PSButtonCell</string>
+			<key>cellClass</key>
+			<string>XXXColorPickerCell</string>
+			<key>fallbackHex</key>        <!-- This cell supports both of the hex formatting styles '#RRGGBBAA' -->
+			<string>#FFFFFF:100</string>  <!-- and '#RRGGBB:AA', but saves as only '#RRGGBBAA' -->
+			<key>supportsAlpha</key>      <!-- Enable or disable Alpha -->
+			<true/>
+			<key>defaults</key>
+			<string>com.company.tweak</string>
+			<key>key</key>
+			<string>key</string>
+			<key>default</key>
+			<string>#000000:80</string>
+			<key>label</key>
+			<string>Color Picker</string>
+			<key>PostNotification</key>
+			<string>com.company.tweak/ReloadPrefs</string>
+		</dict>
+	</array>
 </dict>
+</plist>

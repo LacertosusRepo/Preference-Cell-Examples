@@ -1,45 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
 <dict>
-	<key>cell</key>
-	<string>PSTableCell</string>
-	<key>cellClass</key>
-	<string>XXXStylePickerCell</string>
-	<key>defaults</key>
-	<string>com.company.tweak</string>
-	<key>key</key>
-	<string>key</string>
-	<key>default</key>
-	<string>darkMode</string>
-	<key>PostNotification</key>
-	<string>com.company.tweak/ReloadPrefs</string>
-	<key>options</key>                                 #Creat your options here
+	<key>items</key>
 	<array>
 		<dict>
-			<key>image</key>                               #Set image to be displayed
-			<string>lightimage</string>
-			<key>imageAlt</key>                            #Alternative image that can be disaplyed when in dark mode, if nil normal image is used
-			<string>otherimage</string>
-			<key>appearanceOption</key>                    #Value that will be saved if selected
-			<string>lightMode</string>
-			<key>label</key>                               #Label displayed below image
-			<string>Light Mode</string>
-		</dict>
-
-		<dict>
-			<key>image</key>
-			<string>darkimage</string>
-			<key>appearanceOption</key>
+			<key>cell</key>
+			<string>PSTableCell</string>
+			<key>cellClass</key>
+			<string>XXXStylePickerCell</string>
+			<key>defaults</key>
+			<string>com.company.tweak</string>
+			<key>key</key>
+			<string>key</string>
+			<key>default</key>
 			<string>darkMode</string>
-			<key>label</key>
-			<string>Dark Mode</string>
-		</dict>
+			<key>PostNotification</key>
+			<string>com.company.tweak/ReloadPrefs</string>
+			<key>options</key>                                 <!-- Create your options here -->
+			<array>
+				<dict>
+					<key>image</key>                               <!-- Set image to be displayed -->
+					<string>lightimage</string>
+					<key>imageAlt</key>                            <!-- Alternative image that can be disaplyed when in dark mode, if nil normal image is used -->
+					<string>otherimage</string>
+					<key>appearanceOption</key>                    <!-- Value that will be saved if selected -->
+					<string>lightMode</string>
+					<key>label</key>                               <!-- Label displayed below image -->
+					<string>Light Mode</string>
+				</dict>
 
-		<dict>
-			<key>image</key>
-			<string>colorizedimage</string>
-			<key>appearanceOption</key>
-			<string>colorized</string>
-			<key>label</key>
-			<string>Colorized</string>
+				<dict>
+					<key>image</key>
+					<string>darkimage</string>
+					<key>appearanceOption</key>
+					<string>darkMode</string>
+					<key>label</key>
+					<string>Dark Mode</string>
+				</dict>
+
+				<dict>
+					<key>image</key>
+					<string>colorizedimage</string>
+					<key>appearanceOption</key>
+					<string>colorized</string>
+					<key>label</key>
+					<string>Colorized</string>
+				</dict>
+			</array>
 		</dict>
 	</array>
 </dict>
+</plist>

@@ -64,7 +64,7 @@
     _previewImageView.image = _previewImage;
   }
 
-    //Change image if dark mode is active
+    //Change image if dark mode is active & the alternative image exists
   -(void)setPreviewImageAlt:(UIImage *)image {
     _previewImageAlt = image;
 

@@ -1,4 +1,5 @@
-## In this example we will hide a cell when a switch is set to NO.
+## Dynamically Toggling Specifiers
+*In this example we will hide a cell when a switch is set to NO.*
 
 1. Add a `NSMutableDictionary` property named `savedSpecifiers` to your RootListController's interface, that is where we will store our specifiers that will be hidden and shown:
 
@@ -73,7 +74,7 @@
 	//Get value of switch specifier
 	PSSpecifier *switchSpecifier = [self specifierForID:@"SWITCH_ID"];
 	BOOL switchValue = [[self readPreferenceValue:switchSpecifier] boolValue];
-	
+
 	//Check if our switch is set to NO, then remove the specifier
 	if(!switchValue) {
 		[self removeSpecifier:self.savedSpecifiers[@"CELL_ID"] animated:animated];
@@ -133,4 +134,4 @@
 ```
 
 # Know Issue
-- Removed cells are hidden but not completely deallocated.
+- Removed cells are hidden but not completely deallocated, leaving several hidden cells.

@@ -13,13 +13,13 @@
 		if(self) {
 			[specifier setProperty:@56 forKey:@"height"];
 
-        //Create slider label with lable property of specifier
+				//Create slider label with lable property of specifier
 			_sliderLabel = [[UILabel alloc] initWithFrame:CGRectZero];
 			_sliderLabel.font = [UIFont systemFontOfSize:15 weight:UIFontWeightBold];
 			_sliderLabel.text = [specifier propertyForKey:@"label"];
 			_sliderLabel.translatesAutoresizingMaskIntoConstraints = NO;
 
-        //Create value label
+				//Create value label
 			_valueLabel = [[UILabel alloc] initWithFrame:CGRectZero];
 			_valueLabel.font = [UIFont monospacedDigitSystemFontOfSize:10 weight:UIFontWeightBold];
 			_valueLabel.text = [NSString stringWithFormat:@"%.01f", [[specifier performGetter] floatValue]];
@@ -53,12 +53,12 @@
 				[_valueLabel.heightAnchor constraintEqualToAnchor:_sliderStackView.heightAnchor],
 			]];
 
-        //Add control events to update value label
+				//Add control events to update value label
 			[self.control addTarget:self action:@selector(sliderValueChanged:) forControlEvents:UIControlEventTouchDragInside];
 			[self.control addTarget:self action:@selector(sliderValueChanged:) forControlEvents:UIControlEventTouchDragOutside];
 			[self.control addTarget:self action:@selector(sliderValueChanged:) forControlEvents:UIControlEventValueChanged];
 
-        //Add gesture to value label to set custom value
+				//Add gesture to value label to set custom value
 			UITapGestureRecognizer *enterCustomValueTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(setCustomSliderValue)];
 			enterCustomValueTap.numberOfTapsRequired = 1;
 			[_valueLabel addGestureRecognizer:enterCustomValueTap];
@@ -67,9 +67,9 @@
 		return self;
 	}
 
-    //Present a alert with textfield to let the user enter a custom value
+		//Present a alert with textfield to let the user enter a custom value
 	-(void)setCustomSliderValue {
-    UISlider *slider = (UISlider *)self.control;
+		UISlider *slider = (UISlider *)self.control;
 		NSString *currentValue = [NSString stringWithFormat:@"%.02f", slider.value];
 
 		UIAlertController *enterValueAlert = [UIAlertController alertControllerWithTitle:@"Enter Value" message:nil preferredStyle:UIAlertControllerStyleAlert];
@@ -84,7 +84,7 @@
 
 			CGFloat newValue = [textField.text floatValue];
 
-        //Check that value doesnt exceed limits
+				//Check that value doesnt exceed limits
 			if(newValue > slider.maximumValue) {
 				newValue = slider.maximumValue;
 			} else if(newValue < slider.minimumValue) {
@@ -105,16 +105,16 @@
 		[rootViewController presentViewController:enterValueAlert animated:YES completion:nil];
 	}
 
-    //Update value label when the value changes
+		//Update value label when the value changes
 	-(void)sliderValueChanged:(UISlider *)slider {
 		_valueLabel.text = [NSString stringWithFormat:@"%.01f", slider.value];
 	}
 
-      //Tint the title and value labels
+		//Tint the title and value labels
 	-(void)tintColorDidChange {
-    [super tintColorDidChange];
+		[super tintColorDidChange];
 
-    _sliderLabel.textColor = self.tintColor;
+		_sliderLabel.textColor = self.tintColor;
 		_valueLabel.textColor = self.tintColor;
   }
 
