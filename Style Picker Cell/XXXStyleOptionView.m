@@ -24,7 +24,8 @@
       _previewImageView.translatesAutoresizingMaskIntoConstraints = NO;
 
       _label = [[UILabel alloc] init];
-      _label.font = [UIFont systemFontOfSize:14 weight:UIFontWeightLight];
+      _label.font = [UIFont systemFontOfSize:13 weight:UIFontWeightLight];
+      _label.numberOfLines = 2;
       _label.textAlignment = NSTextAlignmentCenter;
       _label.translatesAutoresizingMaskIntoConstraints = NO;
 

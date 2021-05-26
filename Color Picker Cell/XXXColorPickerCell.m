@@ -17,11 +17,15 @@
       _fallbackHex = [specifier propertyForKey:@"fallbackHex"];
       _supportsAlpha = [specifier propertyForKey:@"supportsAlpha"];
 
+      NSBundle *bundle = [specifier.target bundle];
+			NSString *label = [specifier propertyForKey:@"label"];
+			NSString *localizationTable = [specifier propertyForKey:@"localizationTable"];
+
         //Setup color picker
       _colorPicker = [[UIColorPickerViewController alloc] init];
       _colorPicker.delegate = self;
       _colorPicker.supportsAlpha = _supportsAlpha;
-      _colorPicker.title = [specifier propertyForKey:@"label"];
+      _colorPicker.title = [bundle localizedStringForKey:label value:label table:localizationTable];
 
         //Create color indicator
       _indicatorView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 29, 29)];

@@ -15,18 +15,20 @@
 			<string>key</string>
 			<key>default</key>
 			<string>darkMode</string>
+			<key>localizationTable</key>												<!-- Optional key used for localization -->
+			<string>Root</string>
 			<key>PostNotification</key>
 			<string>com.company.tweak/ReloadPrefs</string>
-			<key>options</key>                                 <!-- Create your options here -->
+			<key>options</key>																	<!-- Create your options here -->
 			<array>
 				<dict>
-					<key>image</key>                               <!-- Set image to be displayed -->
+					<key>image</key>																<!-- Set image to be displayed -->
 					<string>lightimage</string>
-					<key>imageAlt</key>                            <!-- Alternative image that can be disaplyed when in dark mode, if nil normal image is used -->
+					<key>imageAlt</key>															<!-- Alternative image that can be disaplyed when in dark mode, if nil the normal image is used -->
 					<string>otherimage</string>
-					<key>appearanceOption</key>                    <!-- Value that will be saved if selected -->
+					<key>appearanceOption</key>											<!-- Value that will be saved if selected -->
 					<string>lightMode</string>
-					<key>label</key>                               <!-- Label displayed below image -->
+					<key>label</key>																<!-- Label displayed below image -->
 					<string>Light Mode</string>
 				</dict>
 

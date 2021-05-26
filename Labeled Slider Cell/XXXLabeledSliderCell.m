@@ -13,14 +13,18 @@
 		if(self) {
 			[specifier setProperty:@56 forKey:@"height"];
 
-				//Create slider label with lable property of specifier
-			_sliderLabel = [[UILabel alloc] initWithFrame:CGRectZero];
+			NSBundle *bundle = [specifier.target bundle];
+			NSString *label = [specifier propertyForKey:@"label"];
+			NSString *localizationTable = [specifier propertyForKey:@"localizationTable"];
+
+				//Create slider label with label property of specifier
+			_sliderLabel = [[UILabel alloc] init];
 			_sliderLabel.font = [UIFont systemFontOfSize:15 weight:UIFontWeightBold];
-			_sliderLabel.text = [specifier propertyForKey:@"label"];
+			_sliderLabel.text = [bundle localizedStringForKey:label value:label table:localizationTable];
 			_sliderLabel.translatesAutoresizingMaskIntoConstraints = NO;
 
 				//Create value label
-			_valueLabel = [[UILabel alloc] initWithFrame:CGRectZero];
+			_valueLabel = [[UILabel alloc] init];
 			_valueLabel.font = [UIFont monospacedDigitSystemFontOfSize:10 weight:UIFontWeightBold];
 			_valueLabel.text = [NSString stringWithFormat:@"%.01f", [[specifier performGetter] floatValue]];
 			_valueLabel.userInteractionEnabled = YES;

@@ -6,22 +6,24 @@
 	<array>
 		<dict>
 			<key>cell</key>
-			<string>PSButtonCell</string>
+			<string>PSSliderCell</string>
 			<key>cellClass</key>
-			<string>XXXColorPickerCell</string>
-			<key>fallbackHex</key>        <!-- This cell supports both of the hex formatting styles '#RRGGBBAA' -->
-			<string>#FFFFFF:100</string>  <!-- and '#RRGGBB:AA', but saves as only '#RRGGBBAA' -->
-			<key>supportsAlpha</key>      <!-- Enable or disable Alpha -->
-			<true/>
+			<string>XXXLabeledSliderCell</string>
 			<key>defaults</key>
 			<string>com.company.tweak</string>
 			<key>key</key>
 			<string>key</string>
 			<key>default</key>
-			<string>#000000:80</string>
-			<key>label</key>
-			<string>Color Picker</string>
-			<key>localizationTable</key>  <!-- Optional key used for localization -->
+			<string>15</string>
+			<key>min</key>
+			<string>0</string>
+			<key>max</key>
+			<string>30</string>
+			<key>isSegmented</key>
+			<true/>
+			<key>label</key>								<!-- The label will be used for the label above the slider -->
+			<string>Corner Radius</string>
+			<key>localizationTable</key>		<!-- Optional key used for localization -->
 			<string>Root</string>
 			<key>PostNotification</key>
 			<string>com.company.tweak/ReloadPrefs</string>
