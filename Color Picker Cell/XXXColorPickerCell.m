@@ -18,8 +18,8 @@
       _supportsAlpha = [specifier propertyForKey:@"supportsAlpha"];
 
       NSBundle *bundle = [specifier.target bundle];
-			NSString *label = [specifier propertyForKey:@"label"];
-			NSString *localizationTable = [specifier propertyForKey:@"localizationTable"];
+      NSString *label = [specifier propertyForKey:@"label"];
+      NSString *localizationTable = [specifier propertyForKey:@"localizationTable"];
 
         //Setup color picker
       _colorPicker = [[UIColorPickerViewController alloc] init];
