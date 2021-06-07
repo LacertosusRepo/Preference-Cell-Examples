@@ -19,12 +19,12 @@
 </dict>
 ```
 
-| Key Cheat Sheet | Purpose |
-| --------------- | ------- |
-| **footerCellClass** | Sets the class of the footer view. In our case we set it the `PSFooterHyperlinkView`. |
-| **headerFooterHyperlinkButtonTitle** | Sets the text of the footer view. This is interchangeable with the `footerText` key. |
-| **footerHyperlinkRange** | Sets the range of the hyperlink using a `NSRange` in the form of a string. First value is the location of the link, the second value is the length of the link. |
-| **footerHyperlinkAction** | Sets the method that will be called when the hyperlink is tapped. |
+| Key | Type | Purpose |
+| ----| ---- | ------- |
+| **footerCellClass** | string<br>*class* | Sets the class of the footer view. In our case we set it the `PSFooterHyperlinkView`. |
+| **headerFooterHyperlinkButtonTitle** | string | Sets the text of the footer view. This is interchangeable with the `footerText` key. |
+| **footerHyperlinkRange** | range<br>*{location, length}* | Sets the range of the hyperlink using a `NSRange` in the form of a string. First value is the location of the link, the second value is the length of the link. |
+| **footerHyperlinkAction** | string<br>*selector* | Sets the method that will be called when the hyperlink is tapped. |
 
 2. Add the method you set for the `footerHyperlinkAction` key to your RootListController along with the code to open your link:
 
