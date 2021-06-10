@@ -17,17 +17,19 @@
 
     if(self) {
         //Set height of cell
-      [specifier setProperty:@210 forKey:@"height"];
+      [specifier setProperty:@215 forKey:@"height"];
 
       NSMutableArray *optionViewArray = [[NSMutableArray alloc] init];
       NSBundle *bundle = [specifier.target bundle];
       NSArray *options = [specifier propertyForKey:@"options"];
+      NSArray *options = [specifier propertyForKey:@"options"];
+      NSString *localizationTable = [specifier propertyForKey:@"localizationTable"];
 
         //Create option views
       for(NSDictionary *styleProperties in options) {
         XXXStyleOptionView *optionView = [[XXXStyleOptionView alloc] initWithAppearanceOption:[styleProperties objectForKey:@"appearanceOption"]];
         optionView.delegate = self;
-        optionView.label.text = [styleProperties objectForKey:@"label"];
+        optionView.label.text = [bundle localizedStringForKey:[styleProperties objectForKey:@"label"] value:[styleProperties objectForKey:@"label"] table:localizationTable];
         optionView.previewImage = [UIImage imageNamed:[styleProperties objectForKey:@"image"] inBundle:bundle compatibleWithTraitCollection:nil];
         optionView.previewImageAlt = [UIImage imageNamed:[styleProperties objectForKey:@"imageAlt"] inBundle:bundle compatibleWithTraitCollection:nil];
         optionView.highlighted = [optionView.appearanceOption isEqual:[specifier performGetter]];

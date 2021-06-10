@@ -1,24 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
 <dict>
-	<key>cell</key>
-	<string>PSSegmentCell</string>
-	<key>cellClass</key>
-	<string>XXXSegmentTableImageCell</string>
-	<key>defaults</key>
-	<string>com.company.tweak</string>
-	<key>key</key>
-	<string>exampleKey</string>
-	<key>default</key>
-	<string>imageOneValue</string>
-	<key>validTitles</key>
-	<array>								              #Instead of a title, use the file name of the desired image
-		<string>imageOne.png</string>
-		<string>imageTwo.png</string>
-	</array>
-	<key>validValues</key>
+	<key>items</key>
 	<array>
-		<string>imageOneValue</string>
-		<string>imageTwoValue</string>
+		<dict>
+			<key>cell</key>
+			<string>PSSegmentCell</string>
+			<key>cellClass</key>
+			<string>XXXSegmentTableImageCell</string>
+			<key>defaults</key>
+			<string>com.company.tweak</string>
+			<key>key</key>
+			<string>exampleKey</string>
+			<key>default</key>
+			<string>imageOneValue</string>
+			<key>validTitles</key>
+				<array>								              <!-- Instead of a title, use the file name of the desired image -->
+					<string>imageOne.png</string>
+					<string>imageTwo.png</string>
+				</array>
+			<key>validValues</key>								<!-- Leave the values as whatever values you use in your tweak -->
+				<array>
+					<string>imageOneValue</string>
+					<string>imageTwoValue</string>
+				</array>
+			<key>PostNotification</key>
+			<string>com.company.tweak/ReloadPrefs</string>
+		</dict>
 	</array>
-	<key>PostNotification</key>
-	<string>com.company.tweak/ReloadPrefs</string>
 </dict>
+</plist>

@@ -1,14 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
 <dict>
- 	<key>cell</key>
- 	<string>PSGroupCell</string>
- 	<key>footerCellClass</key>
- 	<string>PSFooterHyperlinkView</string>
- 	<key>headerFooterHyperlinkButtonTitle</key>
- 	<string>This is a test footer with a link. Tap here.</string>
- 	<key>footerHyperlinkRange</key>
- 	<string>{35, 8}</string>
- 	<key>footerHyperlinkAction</key>
- 	<string>linkTapped:</string>
-	<key>id</key>
-	<string>UNIQUE_FOOTER_HYPERLINK</string>
+	<key>items</key>
+	<array>
+    <dict>
+		  <key>cell</key>
+	 	  <string>PSGroupCell</string>
+	 	  <key>footerCellClass</key>
+	 	  <string>PSFooterHyperlinkView</string>
+	 	  <key>headerFooterHyperlinkButtonTitle</key>
+	 	  <string>This is a test footer with a link. Tap here.</string>
+	 	  <key>footerHyperlinkRange</key>
+	 	  <string>{35, 8}</string>
+	 	  <key>footerHyperlinkAction</key>
+	 	  <string>linkTapped:</string>
+		  <key>id</key>
+		  <string>UNIQUE_FOOTER_HYPERLINK</string>
+		</dict>
+	</array>
 </dict>
+</plist>
