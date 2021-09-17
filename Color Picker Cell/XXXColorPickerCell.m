@@ -62,7 +62,12 @@
   -(void)presentColorPicker {
     _colorPicker.selectedColor = _currentColor;
 
+    //Ignore keywindow deprecation warning
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
     UIViewController *rootViewController = self._viewControllerForAncestor ?: [UIApplication sharedApplication].keyWindow.rootViewController;
+#pragma clang diagnostic pop
+    
     [rootViewController presentViewController:_colorPicker animated:YES completion:nil];
   }
 
@@ -96,10 +101,10 @@
     if([hexString containsString:@":"] || hexString.length == 6) {
       NSArray *hexComponents = [hexString componentsSeparatedByString:@":"];
       CGFloat alpha = (hexComponents.count == 2) ? [[hexComponents lastObject] floatValue] / 100 : 1.0;
-      hexString = [NSString stringWithFormat:@"%@%02X", [hexComponents firstObject], int(alpha * 255.0)];
+      hexString = [NSString stringWithFormat:@"%@%02X", [hexComponents firstObject], (int)(alpha * 255.0)];
     }
 
-    unsigned hex = 0;
+    unsigned int hex = 0;
     [[NSScanner scannerWithString:hexString] scanHexInt:&hex];
 
     CGFloat r = ((hex & 0xFF000000) >> 24) / 255.0;
@@ -128,7 +133,7 @@
       return [NSString stringWithFormat:@"%@:%@", [hexComponents firstObject], [hexComponents lastObject]];
     }
 
-    unsigned hex = 0;
+    unsigned int hex = 0;
     NSScanner *scanner = [NSScanner scannerWithString:hexString];
     [scanner setCharactersToBeSkipped:[NSCharacterSet characterSetWithCharactersInString:@"#"]];
     [scanner scanHexInt:&hex];
