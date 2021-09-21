@@ -73,23 +73,21 @@
 
 #pragma mark - UIColorPickerViewControllerDelegate Methods
 
-    //When the color picker view window it has been dismissed. We then we save the hex, update the indicator, and update the subtitle.
+    //Update color on selection. We then we save the hex, update the indicator, and update the subtitle.
     //Sidenote: UIColorPickerViewController returns a slightly different UIColor than it is given with selectedColor. Why Apple?
   -(void)colorPickerViewControllerDidSelectColor:(UIColorPickerViewController *)colorPicker {
-    if(!colorPicker.view.window) {
-      _currentColor = colorPicker.selectedColor;
+    _currentColor = colorPicker.selectedColor;
 
-      NSString *selectedColorHex = [self hexFromColor:_currentColor useAlpha:_supportsAlpha];
-      [self.specifier performSetterWithValue:selectedColorHex];
+    NSString *selectedColorHex = [self hexFromColor:_currentColor useAlpha:_supportsAlpha];
+    [self.specifier performSetterWithValue:selectedColorHex];
 
-      [UIView transitionWithView:_indicatorView duration:0.3 options:UIViewAnimationOptionCurveEaseInOut animations:^{
-        _indicatorShape.fillColor = _currentColor.CGColor;
-      } completion:nil];
+    [UIView transitionWithView:_indicatorView duration:0.3 options:UIViewAnimationOptionCurveEaseInOut animations:^{
+      _indicatorShape.fillColor = _currentColor.CGColor;
+    } completion:nil];
 
-      [UIView transitionWithView:self.detailTextLabel duration:0.3 options:UIViewAnimationOptionTransitionCrossDissolve  animations:^{
-        self.detailTextLabel.text = [self legibleStringFromHex:selectedColorHex];
-      } completion:nil];
-    }
+    [UIView transitionWithView:self.detailTextLabel duration:0.3 options:UIViewAnimationOptionTransitionCrossDissolve  animations:^{
+      self.detailTextLabel.text = [self legibleStringFromHex:selectedColorHex];
+    } completion:nil];
   }
 
 #pragma mark - Converting Colors
