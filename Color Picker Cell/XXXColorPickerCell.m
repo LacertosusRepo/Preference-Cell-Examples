@@ -74,7 +74,6 @@
 #pragma mark - UIColorPickerViewControllerDelegate Methods
 
     //Update color on selection. We then we save the hex, update the indicator, and update the subtitle.
-    //Sidenote: UIColorPickerViewController returns a slightly different UIColor than it is given with selectedColor. Why Apple?
   -(void)colorPickerViewControllerDidSelectColor:(UIColorPickerViewController *)colorPicker {
     _currentColor = colorPicker.selectedColor;
 
@@ -115,28 +114,28 @@
 
     //Convert UIColor components into hex format including alpha
   -(NSString *)hexFromColor:(UIColor *)color useAlpha:(BOOL)useAlpha {
-    const CGFloat *colorComponents = CGColorGetComponents(color.CGColor);
-
-    CGFloat r = colorComponents[0];
-    CGFloat g = colorComponents[1];
-    CGFloat b = colorComponents[2];
-    CGFloat a = (useAlpha) ? colorComponents[3] : 1.0;
+    CGFloat r, g, b, a;
+    [color getRed:&r green:&g blue:&b alpha:&a];
 
     return [NSString stringWithFormat:@"#%02X%02X%02X%02X", (int)(r * 255.0), (int)(g * 255.0), (int)(b * 255.0), (int)(a * 255.0)];
   }
 
   -(NSString *)legibleStringFromHex:(NSString *)hexString {
+    hexString = [[hexString stringByReplacingOccurrencesOfString:@"#" withString:@""] uppercaseString];
+
     if([hexString containsString:@":"]) {
       NSArray *hexComponents = [hexString componentsSeparatedByString:@":"];
-      return [NSString stringWithFormat:@"%@:%@", [hexComponents firstObject], [hexComponents lastObject]];
+      return [NSString stringWithFormat:@"#%@:%@", hexComponents[0], hexComponents[1]];
+
+    } else if(hexString.length == 6) {
+      return [NSString stringWithFormat:@"#%@", hexString];
     }
 
     unsigned int hex = 0;
     NSScanner *scanner = [NSScanner scannerWithString:hexString];
-    [scanner setCharactersToBeSkipped:[NSCharacterSet characterSetWithCharactersInString:@"#"]];
     [scanner scanHexInt:&hex];
 
-    return [NSString stringWithFormat:@"%@:%.2f", [hexString substringToIndex:hexString.length - 2], ((hex & 0x000000FF) >> 0) / 255.0];
+    return [NSString stringWithFormat:@"#%@:%.2f", [hexString substringToIndex:hexString.length - 2], ((hex & 0x000000FF) >> 0) / 255.0];
   }
 
 #pragma mark - Tint Color
