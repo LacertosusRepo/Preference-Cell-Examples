@@ -117,7 +117,13 @@
     CGFloat r, g, b, a;
     [color getRed:&r green:&g blue:&b alpha:&a];
 
-    return [NSString stringWithFormat:@"#%02X%02X%02X%02X", (int)(r * 255.0), (int)(g * 255.0), (int)(b * 255.0), (int)(a * 255.0)];
+    NSString *hexString = [NSString stringWithFormat:@"#%02X%02X%02X%02X", (int)(r * 255.0), (int)(g * 255.0), (int)(b * 255.0), (int)(a * 255.0)];
+
+    if(!useAlpha) {
+      hexString = [hexString substringToIndex:hexString.length - 2];
+    }
+
+    return hexString;;
   }
 
   -(NSString *)legibleStringFromHex:(NSString *)hexString {
