@@ -62,29 +62,31 @@
   -(void)presentColorPicker {
     _colorPicker.selectedColor = _currentColor;
 
+    //Ignore keywindow deprecation warning
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
     UIViewController *rootViewController = self._viewControllerForAncestor ?: [UIApplication sharedApplication].keyWindow.rootViewController;
+#pragma clang diagnostic pop
+    
     [rootViewController presentViewController:_colorPicker animated:YES completion:nil];
   }
 
 #pragma mark - UIColorPickerViewControllerDelegate Methods
 
-    //When the color picker view window it has been dismissed. We then we save the hex, update the indicator, and update the subtitle.
-    //Sidenote: UIColorPickerViewController returns a slightly different UIColor than it is given with selectedColor. Why Apple?
+    //Update color on selection. We then we save the hex, update the indicator, and update the subtitle.
   -(void)colorPickerViewControllerDidSelectColor:(UIColorPickerViewController *)colorPicker {
-    if(!colorPicker.view.window) {
-      _currentColor = colorPicker.selectedColor;
+    _currentColor = colorPicker.selectedColor;
 
-      NSString *selectedColorHex = [self hexFromColor:_currentColor useAlpha:_supportsAlpha];
-      [self.specifier performSetterWithValue:selectedColorHex];
+    NSString *selectedColorHex = [self hexFromColor:_currentColor useAlpha:_supportsAlpha];
+    [self.specifier performSetterWithValue:selectedColorHex];
 
-      [UIView transitionWithView:_indicatorView duration:0.3 options:UIViewAnimationOptionCurveEaseInOut animations:^{
-        _indicatorShape.fillColor = _currentColor.CGColor;
-      } completion:nil];
+    [UIView transitionWithView:_indicatorView duration:0.3 options:UIViewAnimationOptionCurveEaseInOut animations:^{
+      _indicatorShape.fillColor = _currentColor.CGColor;
+    } completion:nil];
 
-      [UIView transitionWithView:self.detailTextLabel duration:0.3 options:UIViewAnimationOptionTransitionCrossDissolve  animations:^{
-        self.detailTextLabel.text = [self legibleStringFromHex:selectedColorHex];
-      } completion:nil];
-    }
+    [UIView transitionWithView:self.detailTextLabel duration:0.3 options:UIViewAnimationOptionTransitionCrossDissolve  animations:^{
+      self.detailTextLabel.text = [self legibleStringFromHex:selectedColorHex];
+    } completion:nil];
   }
 
 #pragma mark - Converting Colors
@@ -96,10 +98,10 @@
     if([hexString containsString:@":"] || hexString.length == 6) {
       NSArray *hexComponents = [hexString componentsSeparatedByString:@":"];
       CGFloat alpha = (hexComponents.count == 2) ? [[hexComponents lastObject] floatValue] / 100 : 1.0;
-      hexString = [NSString stringWithFormat:@"%@%02X", [hexComponents firstObject], int(alpha * 255.0)];
+      hexString = [NSString stringWithFormat:@"%@%02X", [hexComponents firstObject], (int)(alpha * 255.0)];
     }
 
-    unsigned hex = 0;
+    unsigned int hex = 0;
     [[NSScanner scannerWithString:hexString] scanHexInt:&hex];
 
     CGFloat r = ((hex & 0xFF000000) >> 24) / 255.0;
@@ -112,28 +114,34 @@
 
     //Convert UIColor components into hex format including alpha
   -(NSString *)hexFromColor:(UIColor *)color useAlpha:(BOOL)useAlpha {
-    const CGFloat *colorComponents = CGColorGetComponents(color.CGColor);
+    CGFloat r, g, b, a;
+    [color getRed:&r green:&g blue:&b alpha:&a];
 
-    CGFloat r = colorComponents[0];
-    CGFloat g = colorComponents[1];
-    CGFloat b = colorComponents[2];
-    CGFloat a = (useAlpha) ? colorComponents[3] : 1.0;
+    NSString *hexString = [NSString stringWithFormat:@"#%02X%02X%02X%02X", (int)(r * 255.0), (int)(g * 255.0), (int)(b * 255.0), (int)(a * 255.0)];
 
-    return [NSString stringWithFormat:@"#%02X%02X%02X%02X", (int)(r * 255.0), (int)(g * 255.0), (int)(b * 255.0), (int)(a * 255.0)];
+    if(!useAlpha) {
+      hexString = [hexString substringToIndex:hexString.length - 2];
+    }
+
+    return hexString;;
   }
 
   -(NSString *)legibleStringFromHex:(NSString *)hexString {
+    hexString = [[hexString stringByReplacingOccurrencesOfString:@"#" withString:@""] uppercaseString];
+
     if([hexString containsString:@":"]) {
       NSArray *hexComponents = [hexString componentsSeparatedByString:@":"];
-      return [NSString stringWithFormat:@"%@:%@", [hexComponents firstObject], [hexComponents lastObject]];
+      return [NSString stringWithFormat:@"#%@:%@", hexComponents[0], hexComponents[1]];
+
+    } else if(hexString.length == 6) {
+      return [NSString stringWithFormat:@"#%@", hexString];
     }
 
-    unsigned hex = 0;
+    unsigned int hex = 0;
     NSScanner *scanner = [NSScanner scannerWithString:hexString];
-    [scanner setCharactersToBeSkipped:[NSCharacterSet characterSetWithCharactersInString:@"#"]];
     [scanner scanHexInt:&hex];
 
-    return [NSString stringWithFormat:@"%@:%.2f", [hexString substringToIndex:hexString.length - 2], ((hex & 0x000000FF) >> 0) / 255.0];
+    return [NSString stringWithFormat:@"#%@:%.2f", [hexString substringToIndex:hexString.length - 2], ((hex & 0x000000FF) >> 0) / 255.0];
   }
 
 #pragma mark - Tint Color

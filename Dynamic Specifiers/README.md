@@ -1,7 +1,7 @@
 ## Dynamically Toggling Specifiers
-*In this example we will hide a cell when a switch is set to NO.*
+*Hiding specifiers can be a way to communicate to a user that an option is unavailble or available in certain circumstances. In this example we will hide a cell when a switch is set to NO.*
 
-1. Add a `NSMutableDictionary` property named `savedSpecifiers` to your RootListController's interface, that is where we will store our specifiers that will be hidden and shown:
+1. Add a `NSMutableDictionary` property named `savedSpecifiers` to your RootListController's interface. This is where we will store our specifiers that will be hidden and shown:
 
 ```objc
 @interface XXXRootListController : PSListController
@@ -9,7 +9,7 @@
 @end
 ```
 
-2. Then in your `Root.plist`, add the ID property to the specifier(s) you intend to toggle along with the specifier(s) who's value(s) will determine if a specifier should be hidden or shown. The ID should be unique for each cell. Also add an ID to whatever specifiers are directly above the hideable specifiers so you can reinsert the specifiers underneath easily. Example *button cell* with a *switch cell*:
+2. In your `Root.plist`, add the ID property to the specifier(s) you intend to toggle along with the specifier(s) who's value will determine if a specifier should be hidden or shown. The ID should be unique for each cell. Also add IDs to whichever specifier(s) you intend to insert your dynamic specifiers under. Example *button cell* with a *switch cell*:
 
 ```xml
 <dict>
@@ -67,7 +67,7 @@
 }
 ```
 
-4. Next add a new method to your RootListController's implementation. `-updateSpecifierVisibility:` will hide or show any specifiers whenever we call the method:
+4. Next add a new method to your RootListController's implementation. `-updateSpecifierVisibility:` will hide or show any specifiers whenever we call the method. Here you will add any conditions for specifiers to be removed/inserted:
 
 ```objc
 -(void)updateSpecifierVisibility:(BOOL)animated {
@@ -133,5 +133,5 @@
 -(void)insertContiguousSpecifiers:(NSArray *)arg1 afterSpecifierID:(id)arg2 animated:(BOOL)arg3;
 ```
 
-# Know Issue
-- Removed cells are hidden but not completely deallocated, leaving several hidden cells.
+# Known Issue
+- Removed cells are hidden but not completely deallocated, leaving several hidden cells in memory.
