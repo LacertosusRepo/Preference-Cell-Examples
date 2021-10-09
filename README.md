@@ -21,7 +21,8 @@
 | [Animated Title View With Icon](Animated%20Title%20View/With%20Icon) | Title label and icon in the navigation bar that 'slide up' when the user scrolls down. | <img src="Animated Title View/With Icon/with_icon.gif" alt="Preview" width="488"> |
 | [Animated Banner](Animated%20Banner) | Pretty animated banner with a bunch of features. | <img src="Animated Banner/images/showcase.gif" alt="Preview" width="488"> |
 | [Dynamic Specifiers](Dynamic%20Specifiers) | Remove or insert specifiers based on other preference values. | <img src="Dynamic Specifiers/preview.gif" alt="Preview" width="488"> |
-| [Footer Hyperlink](https://github.com/LacertosusRepo/Preference-Cell-Examples/tree/main/Footer%20Hyperlink) | Insert a hyperlink in your footer text. | <img src="./Footer Hyperlink/preview.png" alt="Preview"> |
+| [Footer Hyperlink](Footer%20Hyperlink) | Insert a hyperlink in your footer text. | <img src="Footer Hyperlink/preview.png" alt="Preview"> |
+| [Group Cell Header with Button](Group%20Cell%20Header%20with%20Button) | Add a button for your PSGroupCell header. | <img src="Group Cell Header with Button/preview.jpeg" alt="Preview"> |
 
 <!-- Preview size: 886x216 -->
 <!-- | [EXAMPLE]() | DESCRIPTION | <img src="EXAMPLE/preview.gif" alt="Preview" width="488"> | -->
