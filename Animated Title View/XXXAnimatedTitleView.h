@@ -1,6 +1,6 @@
 #import <UIKit/UIKit.h>
 
-@interface LBMAnimatedTitleView : UIView
+@interface XXXAnimatedTitleView : UIView
 -(instancetype)initWithTitle:(NSString *)title minimumScrollOffsetRequired:(CGFloat)minimumOffset;
 -(void)adjustLabelPositionToScrollOffset:(CGFloat)offset;
 @end
