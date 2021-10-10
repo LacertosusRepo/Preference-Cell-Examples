@@ -1,6 +1,13 @@
 #import <UIKit/UIKit.h>
 
-@interface LBMAnimatedTitleView : UIView
--(instancetype)initWithTitle:(NSString *)title minimumScrollOffsetRequired:(CGFloat)minimumOffset;
--(void)adjustLabelPositionToScrollOffset:(CGFloat)offset;
+@interface XXXAnimatedTitleView : UIView {
+    NSLayoutConstraint *labelYConstraint;
+    NSLayoutConstraint *iconYConstraint;
+    CGFloat minimumOffsetRequired;
+}
+@property (nonatomic, strong, readonly) UIImageView *iconImageView;
+@property (nonatomic, strong, readonly) UILabel *titleLabel;
+- (instancetype)initWithTitle:(NSString *)title minimumScrollOffsetRequired:(CGFloat)minimumOffset;
+- (instancetype)initWithTitle:(NSString *)title image:(_Nullable UIImage *)image minimumScrollOffsetRequired:(CGFloat)minimumOffset;
+- (void)adjustItemsPositionToScrollOffset:(CGFloat)offset;
 @end
