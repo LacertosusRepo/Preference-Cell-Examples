@@ -1,7 +1,11 @@
 #import <Preferences/PSSpecifier.h>
 
+@interface UIColor (Private)
++ (UIColor *)_systemColorWithName:(NSString *)arg1;
+@end
+
 @interface UIColor (SymbolsLinkCell)
-+ (UIColor *)systemColorFromString:(NSString *)stringColor;
++ (UIColor *)systemColorFromString:(NSString *)colorString;
 + (UIColor *)colorFromHexString:(NSString *)hex;
 @end
 

@@ -2,38 +2,18 @@
 
 @implementation UIColor (SymbolsLinkCell)
 
-+ (UIColor *)systemColorFromString:(NSString *)stringColor {
-    if ([stringColor containsString:@"blue"]) {
-        return [UIColor systemBlueColor];
-    } else if ([stringColor containsString:@"green"]) {
-        return [UIColor systemGreenColor];
-    } else if ([stringColor containsString:@"indigo"]) {
-        return [UIColor systemIndigoColor];
-    } else if ([stringColor containsString:@"orange"]) {
-        return [UIColor systemOrangeColor];
-    } else if ([stringColor containsString:@"pink"]) {
-        return [UIColor systemPinkColor];
-    } else if ([stringColor containsString:@"purple"]) {
-        return [UIColor systemPurpleColor];
-    } else if ([stringColor containsString:@"red"]) {
-        return [UIColor systemRedColor];
-    } else if ([stringColor containsString:@"teal"]) {
-        return [UIColor systemTealColor];
-    } else if ([stringColor containsString:@"yellow"]) {
-        return [UIColor systemYellowColor];
-    } else if ([stringColor containsString:@"gray2"]) {
-        return [UIColor systemGray2Color];
-    } else if ([stringColor containsString:@"gray3"]) {
-        return [UIColor systemGray3Color];
-    } else if ([stringColor containsString:@"gray4"]) {
-        return [UIColor systemGray4Color];
-    } else if ([stringColor containsString:@"gray5"]) {
-        return [UIColor systemGray5Color];
-    } else if ([stringColor containsString:@"gray6"]) {
-        return [UIColor systemGray6Color];
-    } else if ([stringColor containsString:@"gray"]) {
-        return [UIColor systemGrayColor];
++ (UIColor *)systemColorFromString:(NSString *)colorString {
+    NSString *finalColorString = [NSString stringWithFormat:@"system%@Color", [colorString capitalizedString]];
+
+    if ([UIColor respondsToSelector:@selector(_systemColorWithName:)]) {
+        return [UIColor _systemColorWithName:finalColorString];
+    } else {
+        SEL colorSelector = NSSelectorFromString(finalColorString);
+        if ([UIColor respondsToSelector:colorSelector]) {
+            return [UIColor performSelector:colorSelector];
+        }
     }
+
     return nil;
 }
 
