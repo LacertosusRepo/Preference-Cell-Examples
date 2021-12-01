@@ -1,137 +1,228 @@
 ## Dynamically Toggling Specifiers
-*Hiding specifiers can be a way to communicate to a user that an option is unavailble or available in certain circumstances. In this example we will hide a cell when a switch is set to NO.*
+*Hiding specifiers can be a way to communicate to a user that an option is unavailable or available in certain circumstances. In this example we will hide a cell when a switch is set to NO.*
 
-1. Add a `NSMutableDictionary` property named `savedSpecifiers` to your RootListController's interface. This is where we will store our specifiers that will be hidden and shown:
+1. Add a `NSMutableDictionary` property named `dynamicSpecifiers` and a `BOOL` property named `hasDynamicSpecifiers` to your RootListController's interface. The dictionary is where we will save our togglable specifiers and the opposing specifier `id` who's value determines the visibility of the toggleable specifier:
 
 ```objc
 @interface XXXRootListController : PSListController
-@property (nonatomic, retain) NSMutableDictionary *savedSpecifiers;
+@property (nonatomic, assign) BOOL hasDynamicSpecifiers;
+@property (nonatomic, retain) NSMutableDictionary *dynamicSpecifiers;
 @end
 ```
 
-2. In your `Root.plist`, add the ID property to the specifier(s) you intend to toggle along with the specifier(s) who's value will determine if a specifier should be hidden or shown. The ID should be unique for each cell. Also add IDs to whichever specifier(s) you intend to insert your dynamic specifiers under. Example *button cell* with a *switch cell*:
+2. Add an `id` to the opposing specifier which value we need to check when hiding or showing our dynamic specifier. This `id` should be unique. Add the `dynamicRule` key to the specifier that will be dynamic:
 
 ```xml
 <dict>
-	<key>cell</key>
-	<string>PSGroupCell</string>
-	<key>label</key>
-	<string>My Cells</string>
+  <key>cell</key>
+  <string>PSGroupCell</string>
 </dict>
 <dict>
-	<key>cell</key>
-	<string>PSSwitchCell</string>
-	<key>default</key>
-	<true/>
-	<key>defaults</key>
-	<string>com.company.tweak</string>
-	<key>key</key>
-	<string>switchKey</string>
-	<key>label</key>
-	<string>This Switch Will Toggle The Other Cell</string>
-	<key>PostNotification</key>
-	<string>com.company.tweak/ReloadPrefs</string>
-	<key>id</key>
-	<string>SWITCH_ID</string>
+  <key>cell</key>
+  <string>PSSwitchCell</string>
+  <key>default</key>
+  <true/>
+  <key>defaults</key>
+  <string>com.company.tweak</string>
+  <key>key</key>
+  <string>switchKey</string>
+  <key>label</key>
+  <string>This Switch Will Toggle The Other Cell</string>
+  <key>PostNotification</key>
+  <string>com.company.tweak/ReloadPrefs</string>
+  <key>id</key>
+  <string>SWITCH_ID</string>
 </dict>
 <dict>
-	<key>cell</key>
-	<string>PSButtonCell</string>
-	<key>action</key>
-	<string>buttonAction:</string>
-	<key>label</key>
-	<string>This Button Cell Will Be Hidden/Shown</string>
-	<key>id</key>
-	<string>CELL_ID</string>
+  <key>cell</key>
+  <string>PSButtonCell</string>
+  <key>action</key>
+  <string>buttonAction:</string>
+  <key>label</key>
+  <string>This Button Cell Will Be Dynamically Hidden/Shown</string>
+  <key>dynamicRule</key>
+  <string></string>
 </dict>
 ```
 
-3. In your XXXRootListController.m file, add a for loop that will add any specifiers with specific IDs to the savedSpecifiers NSMutableDictionary. Add this in the `-specifiers` method:
+3. Configuring your 'dynamicRule' is easy, here is a quick description of each component: Specifier ID, Comparator, Value To Compare To. For this example, we would configure the specifier to hide when the switch's value is NO:
+
+```xml
+<dict>
+  <key>cell</key>
+  <string>PSButtonCell</string>
+  <key>action</key>
+  <string>buttonAction:</string>
+  <key>label</key>
+  <string>This Button Cell Will Be Dynamically Hidden/Shown</string>
+  <key>dynamicRule</key>
+  <string>SWITCH_ID, ==, 0</string>
+</dict>
+```
+
+4. Add the method `collectDynamicSpecifiersFromArray:` to your RootListController. This method adds the dynamic specifier to the `dynamicSpecifiers` dictionary with the opposing specifier's `id` as the key. Call this method from the `-specifiers` method and `-reloadSpecifiers`:
 
 ```objc
+-(void)collectDynamicSpecifiersFromArray:(NSArray *)array {
+  if(!self.dynamicSpecifiers) {
+    self.dynamicSpecifiers = [NSMutableDictionary new];
+
+  } else {
+    [self.dynamicSpecifiers removeAllObjects];
+  }
+
+  for(PSSpecifier *specifier in array) {
+    NSString *dynamicSpecifierRule = [specifier propertyForKey:@"dynamicRule"];
+
+    if(dynamicSpecifierRule.length > 0) {
+      NSArray *ruleComponents = [dynamicSpecifierRule componentsSeparatedByString:@", "];
+
+      if(ruleComponents.count == 3) {
+        NSString *opposingSpecifierID = [ruleComponents objectAtIndex:0];
+        [self.dynamicSpecifiers setObject:specifier forKey:opposingSpecifierID];
+
+      } else {
+        [NSException raise:NSInternalInconsistencyException format:@"dynamicRule key requires three components (Specifier ID, Comparator, Value To Compare To). You have %ld of 3 (%@) for specifier '%@'.", ruleComponents.count, dynamicSpecifierRule, [specifier propertyForKey:PSTitleKey]];
+      }
+    }
+  }
+
+  self.hasDynamicSpecifiers = (self.dynamicSpecifiers.count > 0);
+}
+
 -(NSArray *)specifiers {
-	if(!specifiers) {
-		_specifiers = ...;  //Leave this as usual
+  if (!_specifiers) {
+    _specifiers = [self loadSpecifiersFromPlistName:@"Root" target:self];
 
-		//In this array you should add the IDs of all the specifiers you are going to hide & show.
-		//Do not include the IDs of the cells you will reinsert them under.
-		//Notice I only included "CELL_ID" and not "SWITCH_ID".
-		NSArray *chosenIDs = @[@"CELL_ID"];
-		self.savedSpecifiers = (savedSpecifiers) ?: [[NSMutableDictionary alloc] init];
-		for(PSSpecifier *specifier in [self specifiersForIDs:chosenIDs) {
-			[self.savedSpecifiers setObject:specifier forKey:[specifier propertyForKey:@"id"]];
-		}
-	}
+    [self collectDynamicSpecifiersFromArray:_specifiers];
+  }
 
-	return _specifiers;
+  return _specifiers;
+}
+
+-(void)reloadSpecifiers {
+  [super reloadSpecifiers];
+
+  [self collectDynamicSpecifiersFromArray:self.specifiers];
 }
 ```
 
-4. Next add a new method to your RootListController's implementation. `-updateSpecifierVisibility:` will hide or show any specifiers whenever we call the method. Here you will add any conditions for specifiers to be removed/inserted:
-
-```objc
--(void)updateSpecifierVisibility:(BOOL)animated {
-	//Get value of switch specifier
-	PSSpecifier *switchSpecifier = [self specifierForID:@"SWITCH_ID"];
-	BOOL switchValue = [[self readPreferenceValue:switchSpecifier] boolValue];
-
-	//Check if our switch is set to NO, then remove the specifier
-	if(!switchValue) {
-		[self removeSpecifier:self.savedSpecifiers[@"CELL_ID"] animated:animated];
-
-	//If the switch is set to YES, we check if the specifier exists then insert it after the switch using the SWITCH_ID
-	} else if(![self containsSpecifier:self.savedSpecifiers[@"CELL_ID"]]) {
-		[self insertSpecifier:self.savedSpecifiers[@"CELL_ID"] afterSpecifierID:@"SWITCH_ID" animated:animated];
-	}
-}
-```
-
-5. Next add the `-setPreferenceValue:specifier:` method to your XXXRootListController.m file. This method is called whenever a value is changed, so we can update specifier visibility:
+5. Next we will override some methods to add some additional functionality. In the `-setPreferenceValue:specifier:` method we update our visible cells if the value changed belongs to a specifier tied to one of our dynamic specifiers:
 
 ```objc
 -(void)setPreferenceValue:(id)value specifier:(PSSpecifier *)specifier {
-	[super setPreferenceValue:value specifier:specifier];
+    [super setPreferenceValue:value specifier:specifier];
+    
+    if(self.hasDynamicSpecifiers) {
+      NSString *specifierID = [specifier propertyForKey:PSIDKey];
+      PSSpecifier *dynamicSpecifier = [self.dynamicSpecifiers objectForKey:specifierID];
 
-	[self updateSpecifierVisibility:YES];
-}
+      if(dynamicSpecifier) {
+        [self.table beginUpdates];
+        [self.table endUpdates];
+      }
+    }
+  }
 ```
 
-6. Similarly we do the same update in the `-reloadSpecifiers` method. You can notice if we hide a cell, leave then re-enter the preferences page that any hidden cells magically reappear. We fix this by updating the specifiers we need to again:
+6. Next, in the `-tableView:heightForRowAtIndexPath:` delegate method we return zero whenever one of our dynamic specifiers should be hidden:
 
 ```objc
--(void)reloadSpecifiers {
-	[super reloadSpecifiers];
+-(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+  if(self.hasDynamicSpecifiers) {
+    PSSpecifier *dynamicSpecifier = [self specifierAtIndexPath:indexPath];
 
-	//We set the animated argument to NO to hide cell's animation of being removed
-	[self updateSpecifierVisibility:NO];
+    if([self.dynamicSpecifiers.allValues containsObject:dynamicSpecifier]) {
+      BOOL shouldHide = [self shouldHideSpecifier:dynamicSpecifier];
+
+      UITableViewCell *specifierCell = [dynamicSpecifier propertyForKey:PSTableCellKey];
+      specifierCell.clipsToBounds = shouldHide;
+
+      if(shouldHide) {
+        return 0;
+      } 
+    }
+  }
+
+  return UITableViewAutomaticDimension;
 }
 ```
 
-7. Finally, to ensure our cells are in the right state on entering our preference page we update the specifiers in `-viewDidLoad`:
+7. Now we will implement the `-shouldHideSpecifier:` method. This method checks if the condition is met to hide the specifier:
 
 ```objc
--(void)viewDidLoad {
-	[super viewDidLoad];
+-(BOOL)shouldHideSpecifier:(PSSpecifier *)specifier {
+  if(specifier) {
+    NSString *dynamicSpecifierRule = [specifier propertyForKey:@"dynamicRule"];
+    NSArray *ruleComponents = [dynamicSpecifierRule componentsSeparatedByString:@", "];
 
-	[self updateSpecifierVisibility:NO];
+    PSSpecifier *opposingSpecifier = [self specifierForID:[ruleComponents objectAtIndex:0]];
+    id opposingValue = [self readPreferenceValue:opposingSpecifier];
+    id requiredValue = [ruleComponents objectAtIndex:2];
+
+    if([opposingValue isKindOfClass:NSNumber.class]) {
+      XXDynamicSpecifierOperatorType operatorType = [self operatorTypeForString:[ruleComponents objectAtIndex:1]];
+
+      switch(operatorType) {
+        case LDEqualToOperatorType:
+          return ([opposingValue intValue] == [requiredValue intValue]);
+        break;
+
+        case LDNotEqualToOperatorType:
+          return ([opposingValue intValue] != [requiredValue intValue]);
+        break;
+
+        case LDGreaterThanOperatorType:
+          return ([opposingValue intValue] > [requiredValue intValue]);
+        break;
+
+        case LDLessThanOperatorType:
+          return ([opposingValue intValue] < [requiredValue intValue]);
+        break;
+      }
+    }
+
+    if([opposingValue isKindOfClass:NSString.class]) {
+      return [opposingValue isEqualToString:requiredValue];
+    }
+
+    if([opposingValue isKindOfClass:NSArray.class]) {
+      return [opposingValue containsObject:requiredValue];
+    }
+  }
+
+  return NO;
 }
 ```
 
-# Additional Notes:
-- You might need to declare `-containsSpecifier:` or `-readPreferenceValue:` depending on your SDK:
+8. Finally, we implement the `-operatorTypeForString:` helper method which converts the operator string from the `dynamicRule` key to an enum you should declare in your RootListController header:
+
+```objc
+-(XXDynamicSpecifierOperatorType)operatorTypeForString:(NSString *)string {
+  NSDictionary *operatorValues = @{ @"==" : @(XXEqualToOperatorType), @"!=" : @(XXNotEqualToOperatorType), @">" : @(XXGreaterThanOperatorType), @"<" : @(XXLessThanOperatorType) };
+  return [operatorValues[string] intValue];
+}
+```
+
+```objc
+typedef NS_ENUM(NSInteger, XXDynamicSpecifierOperatorType) {
+  XXEqualToOperatorType,
+  XXNotEqualToOperatorType,
+  XXGreaterThanOperatorType,
+  XXLessThanOperatorType,
+};
+```
+
+# Additional Note
+
+* Depending on what SDK you use, you might need to declare the `-readPreferenceValue:` method for `PSListController`:
 
 ```objc
 @interface PSListController (Private)
--(BOOL)containsSpecifier:(PSSpecifier *)arg1;
 -(id)readPreferenceValue:(PSSpecifier *)arg1;
 @end
 ```
 
-- Need to remove/insert multiple specifiers? Use these methods instead as they take an array of specifiers to remove/insert:
-```objc
--(void)removeContiguousSpecifiers:(NSArray *)arg1 animated:(BOOL)arg2;
--(void)insertContiguousSpecifiers:(NSArray *)arg1 afterSpecifierID:(id)arg2 animated:(BOOL)arg3;
-```
+* This method can be implemented in the form of a category to `PSListController`, if used often enough. Included in my [libDeusPrefs](https://github.com/LacertosusRepo/libDeusPrefs) library.
 
-# Known Issue
-- Removed cells are hidden but not completely deallocated, leaving several hidden cells in memory.
+* This method improves over my old method of inserting/removing specifiers greatly (in my opinion), requireing less work on the developer's end at the cost of control. 
