@@ -10,7 +10,7 @@
 @end
 ```
 
-2. Add an `id` to the opposing specifier which value we need to check when hiding or showing our dynamic specifier. This `id` should be unique. Add the `dynamicRule` key to the specifier that will be dynamic:
+2. Add an (unique) `id` to the opposing specifier which value we need to check when hiding or showing our dynamic specifier. Add the `dynamicRule` key to the specifier that will be dynamic:
 
 ```xml
 <dict>
@@ -45,7 +45,24 @@
 </dict>
 ```
 
-3. Configuring your 'dynamicRule' is easy, here is a quick description of each component: Specifier ID, Comparator, Value To Compare To. For this example, we would configure the specifier to hide when the switch's value is NO:
+3. You **MUST** add the `height` key to your dynamic specifier if it is not specified already or is set somewhere else programatically:
+
+```xml
+<dict>
+  <key>cell</key>
+  <string>PSButtonCell</string>
+  <key>action</key>
+  <string>buttonAction:</string>
+  <key>label</key>
+  <string>This Button Cell Will Be Dynamically Hidden/Shown</string>
+  <key>height</key>
+  <real>44</key>
+  <key>dynamicRule</key>
+  <string></string>
+</dict>
+```
+
+4. Configuring your 'dynamicRule' is easy, here is a quick description of each component: Specifier ID, Comparator, Value To Compare To. For this example, we would configure the specifier to hide when the switch's value is NO:
 
 ```xml
 <dict>
@@ -60,7 +77,7 @@
 </dict>
 ```
 
-4. Add the method `collectDynamicSpecifiersFromArray:` to your RootListController. This method adds the dynamic specifier to the `dynamicSpecifiers` dictionary with the opposing specifier's `id` as the key. Call this method from the `-specifiers` method and `-reloadSpecifiers`:
+5. Add the method `collectDynamicSpecifiersFromArray:` to your RootListController. This method adds the dynamic specifier to the `dynamicSpecifiers` dictionary with the opposing specifier's `id` as the key. Call this method from the `-specifiers` method and `-reloadSpecifiers`:
 
 ```objc
 -(void)collectDynamicSpecifiersFromArray:(NSArray *)array {
@@ -107,7 +124,7 @@
 }
 ```
 
-5. Next we will override some methods to add some additional functionality. In the `-setPreferenceValue:specifier:` method we update our visible cells if the value changed belongs to a specifier tied to one of our dynamic specifiers:
+6. Next we will override some methods to add some additional functionality. In the `-setPreferenceValue:specifier:` method we update our visible cells if the value changed belongs to a specifier tied to one of our dynamic specifiers:
 
 ```objc
 -(void)setPreferenceValue:(id)value specifier:(PSSpecifier *)specifier {
@@ -125,7 +142,7 @@
   }
 ```
 
-6. Next, in the `-tableView:heightForRowAtIndexPath:` delegate method we return zero whenever one of our dynamic specifiers should be hidden:
+7. Next, in the `-tableView:heightForRowAtIndexPath:` delegate method we return zero whenever one of our dynamic specifiers should be hidden:
 
 ```objc
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -148,7 +165,7 @@
 }
 ```
 
-7. Now we will implement the `-shouldHideSpecifier:` method. This method checks if the condition is met to hide the specifier:
+8. Now we will implement the `-shouldHideSpecifier:` method. This method checks if the condition is met to hide the specifier:
 
 ```objc
 -(BOOL)shouldHideSpecifier:(PSSpecifier *)specifier {
