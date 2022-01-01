@@ -62,7 +62,7 @@
 </dict>
 ```
 
-4. Configuring your 'dynamicRule' is easy, here is a quick description of each component: Specifier ID, Comparator, Value To Compare To. For this example, we would configure the specifier to hide when the switch's value is NO:
+4. A specifiers's `dynamicRule` is the condition that needs to be met for your the specifier to be hidden. Configuring your 'dynamicRule' is easy, here is a quick description of each component: Specifier ID, Comparator, Value To Compare To. For this example, we would configure the specifier to hide when the switch's value is NO:
 
 ```xml
 <dict>
@@ -230,7 +230,7 @@ typedef NS_ENUM(NSInteger, XXDynamicSpecifierOperatorType) {
 };
 ```
 
-# Additional Note
+# Additional Notes
 
 * Depending on what SDK you use, you might need to declare the `-readPreferenceValue:` method for `PSListController`:
 
@@ -242,4 +242,13 @@ typedef NS_ENUM(NSInteger, XXDynamicSpecifierOperatorType) {
 
 * This method can be implemented in the form of a category to `PSListController`, if used often enough. Included in my [libDeusPrefs](https://github.com/LacertosusRepo/libDeusPrefs) library.
 
-* This method improves over my old method of inserting/removing specifiers greatly (in my opinion), requireing less work on the developer's end at the cost of control. 
+* This method improves over my old method of inserting/removing specifiers greatly (in my opinion), requireing less work on the developer's end at the cost of control.
+
+* Here is a complete list of operators for the `dynamicRule` key. You can always add your own:
+
+| Operator | Example Usage | 
+| -------- | ------------- |
+| == | SPEC_ID, ==, 242 |
+| != | SPEC_ID, !=, 0 |
+| > | SPEC_ID, >, 5 |
+| < | SPEC_ID, <, 100 |
