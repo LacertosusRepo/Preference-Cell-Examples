@@ -25,29 +25,31 @@
   }
 
   -(void)presentAlert {
-    _alert = [UIAlertController alertControllerWithTitle:@"Set Delay" message:@"" preferredStyle:UIAlertControllerStyleActionSheet];
-    [_alert addAction:[UIAlertAction actionWithTitle:@"Done" style:UIAlertActionStyleCancel handler:nil]];
+    if(!_alert) {
+      _alert = [UIAlertController alertControllerWithTitle:@"Set Delay" message:@"" preferredStyle:UIAlertControllerStyleActionSheet];
+      [_alert addAction:[UIAlertAction actionWithTitle:@"Done" style:UIAlertActionStyleCancel handler:nil]];
 
-    _timePicker = [[UIPickerView alloc] init];
-    _timePicker.dataSource = self;
-    _timePicker.delegate = self;
-    _timePicker.showsSelectionIndicator = YES;
-    _timePicker.translatesAutoresizingMaskIntoConstraints = NO;
+      _timePicker = [[UIPickerView alloc] init];
+      _timePicker.dataSource = self;
+      _timePicker.delegate = self;
+      _timePicker.showsSelectionIndicator = YES;
+      _timePicker.translatesAutoresizingMaskIntoConstraints = NO;
 
-    [_timePicker selectRow:_hours inComponent:0 animated:YES];
-    [_timePicker selectRow:_minutes inComponent:1 animated:YES];
-    [_timePicker selectRow:_seconds inComponent:2 animated:YES];
+      [_timePicker selectRow:_hours inComponent:0 animated:YES];
+      [_timePicker selectRow:_minutes inComponent:1 animated:YES];
+      [_timePicker selectRow:_seconds inComponent:2 animated:YES];
 
-    _alert.view.clipsToBounds = YES;
-    [_alert.view addSubview:_timePicker];
+      _alert.view.clipsToBounds = YES;
+      [_alert.view addSubview:_timePicker];
 
-    [NSLayoutConstraint activateConstraints:@[
-      [_alert.view.widthAnchor constraintEqualToAnchor:_timePicker.widthAnchor],
-      [_alert.view.heightAnchor constraintEqualToAnchor:_timePicker.heightAnchor constant:100],
+      [NSLayoutConstraint activateConstraints:@[
+        [_alert.view.widthAnchor constraintEqualToAnchor:_timePicker.widthAnchor],
+        [_alert.view.heightAnchor constraintEqualToAnchor:_timePicker.heightAnchor constant:100],
 
-      [_timePicker.centerXAnchor constraintEqualToAnchor:_alert.view.centerXAnchor],
-      [_timePicker.centerYAnchor constraintEqualToAnchor:_alert.view.centerYAnchor constant:-25],
-    ]];
+        [_timePicker.centerXAnchor constraintEqualToAnchor:_alert.view.centerXAnchor],
+        [_timePicker.centerYAnchor constraintEqualToAnchor:_alert.view.centerYAnchor constant:-25],
+      ]];
+    }
 
     //Alderis
     //https://github.com/hbang/Alderis/blob/138dfd16028caf6bebb0e9c611ea44934696d878/lcpshim/HBColorPickerTableCell.m#L86-L87
@@ -111,10 +113,10 @@
   }
 
   -(void)setSelected:(BOOL)selected animated:(BOOL)animated {
+    [super setSelected:selected animated:animated];
+    
     if(selected) {
       [self presentAlert];
-    } else {
-      [super setSelected:selected animated:animated];
     }
   }
 
