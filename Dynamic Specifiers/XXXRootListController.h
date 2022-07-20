@@ -12,7 +12,7 @@ typedef NS_ENUM(NSInteger, XXDynamicSpecifierOperatorType) {
 @interface XXXRootListController : PSListController
 @property (nonatomic, assign) BOOL hasDynamicSpecifiers;
 @property (nonatomic, retain) NSMutableDictionary *dynamicSpecifiers;
--(void)collectDynamicSpecifiersFromArray:(NSArray *)array;
--(BOOL)shouldHideSpecifier:(PSSpecifier *)specifier;
--(XXDynamicSpecifierOperatorType)operatorTypeForString:(NSString *)string;
+- (void)collectDynamicSpecifiersFromArray:(NSArray *)array;
+- (BOOL)shouldHideSpecifier:(PSSpecifier *)specifier;
+- (XXDynamicSpecifierOperatorType)operatorTypeForString:(NSString *)string;
 @end
