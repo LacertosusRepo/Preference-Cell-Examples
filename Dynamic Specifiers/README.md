@@ -80,31 +80,40 @@
 5. Add the method `collectDynamicSpecifiersFromArray:` to your RootListController. This method adds the dynamic specifier to the `dynamicSpecifiers` dictionary with the opposing specifier's `id` as the key. Call this method from the `-specifiers` method and `-reloadSpecifiers`:
 
 ```objc
--(void)collectDynamicSpecifiersFromArray:(NSArray *)array {
-  if(!self.dynamicSpecifiers) {
-    self.dynamicSpecifiers = [NSMutableDictionary new];
-
-  } else {
-    [self.dynamicSpecifiers removeAllObjects];
-  }
-
-  for(PSSpecifier *specifier in array) {
-    NSString *dynamicSpecifierRule = [specifier propertyForKey:@"dynamicRule"];
-
-    if(dynamicSpecifierRule.length > 0) {
-      NSArray *ruleComponents = [dynamicSpecifierRule componentsSeparatedByString:@", "];
-
-      if(ruleComponents.count == 3) {
-        NSString *opposingSpecifierID = [ruleComponents objectAtIndex:0];
-        [self.dynamicSpecifiers setObject:specifier forKey:opposingSpecifierID];
-
-      } else {
-        [NSException raise:NSInternalInconsistencyException format:@"dynamicRule key requires three components (Specifier ID, Comparator, Value To Compare To). You have %ld of 3 (%@) for specifier '%@'.", ruleComponents.count, dynamicSpecifierRule, [specifier propertyForKey:PSTitleKey]];
-      }
+- (void)collectDynamicSpecifiersFromArray:(NSArray *)array {
+    if (!self.dynamicSpecifiers) {
+        self.dynamicSpecifiers = [NSMutableDictionary new];
+        
+    } else {
+        [self.dynamicSpecifiers removeAllObjects];
     }
-  }
-
-  self.hasDynamicSpecifiers = (self.dynamicSpecifiers.count > 0);
+    
+    for (PSSpecifier *specifier in array) {
+        NSString *dynamicSpecifierRule = [specifier propertyForKey:@"dynamicRule"];
+        
+        if (dynamicSpecifierRule.length > 0) {
+            NSArray *ruleComponents = [dynamicSpecifierRule componentsSeparatedByString:@", "];
+            
+            if (ruleComponents.count == 3) {
+                NSString *opposingSpecifierID = [ruleComponents objectAtIndex:0];
+                if ([self.dynamicSpecifiers objectForKey:opposingSpecifierID]) {
+                    NSMutableArray *specifiers = [[self.dynamicSpecifiers objectForKey:opposingSpecifierID] mutableCopy];
+                    [specifiers addObject:specifier];
+                    
+                    
+                    [self.dynamicSpecifiers removeObjectForKey:opposingSpecifierID];
+                    [self.dynamicSpecifiers setObject:specifiers forKey:opposingSpecifierID];
+                } else {
+                    [self.dynamicSpecifiers setObject:[NSMutableArray arrayWithArray:@[specifier]] forKey:opposingSpecifierID];
+                }
+                
+            } else {
+                [NSException raise:NSInternalInconsistencyException format:@"dynamicRule key requires three components (Specifier ID, Comparator, Value To Compare To). You have %ld of 3 (%@) for specifier '%@'.", ruleComponents.count, dynamicSpecifierRule, [specifier propertyForKey:PSTitleKey]];
+            }
+        }
+    }
+    
+    self.hasDynamicSpecifiers = (self.dynamicSpecifiers.count > 0);
 }
 
 -(NSArray *)specifiers {
@@ -145,23 +154,26 @@
 7. Next, in the `-tableView:heightForRowAtIndexPath:` delegate method we return zero whenever one of our dynamic specifiers should be hidden:
 
 ```objc
--(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-  if(self.hasDynamicSpecifiers) {
-    PSSpecifier *dynamicSpecifier = [self specifierAtIndexPath:indexPath];
-
-    if([self.dynamicSpecifiers.allValues containsObject:dynamicSpecifier]) {
-      BOOL shouldHide = [self shouldHideSpecifier:dynamicSpecifier];
-
-      UITableViewCell *specifierCell = [dynamicSpecifier propertyForKey:PSTableCellKey];
-      specifierCell.clipsToBounds = shouldHide;
-
-      if(shouldHide) {
-        return 0;
-      } 
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (self.hasDynamicSpecifiers) {
+        PSSpecifier *dynamicSpecifier = [self specifierAtIndexPath:indexPath];
+        BOOL __block shouldHide = false;
+        
+        [self.dynamicSpecifiers enumerateKeysAndObjectsUsingBlock:^(id  _Nonnull key, id  _Nonnull obj, BOOL * _Nonnull stop) {
+            NSMutableArray *specifiers = obj;
+            if ([specifiers containsObject:dynamicSpecifier]) {
+                shouldHide = [self shouldHideSpecifier:dynamicSpecifier];
+                
+                UITableViewCell *specifierCell = [dynamicSpecifier propertyForKey:PSTableCellKey];
+                specifierCell.clipsToBounds = shouldHide;
+            }
+        }];
+        if (shouldHide) {
+            return 0;
+        }
     }
-  }
-
-  return UITableViewAutomaticDimension;
+    
+    return UITableViewAutomaticDimension;
 }
 ```
 
