@@ -13,5 +13,5 @@
 @property (nonatomic, retain) UIImage *previewImageAlt;
 @property (nonatomic, retain) UILabel *label;
 -(instancetype)initWithAppearanceOption:(id)option;
--(void)updateViewForOption:(id)style;
+-(void)updateViewForOption:(id)option;
 @end

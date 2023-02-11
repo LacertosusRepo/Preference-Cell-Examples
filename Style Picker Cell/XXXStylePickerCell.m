@@ -21,19 +21,25 @@
 
       NSMutableArray *optionViewArray = [[NSMutableArray alloc] init];
       NSBundle *bundle = [specifier.target bundle];
-      NSArray *options = [specifier propertyForKey:@"options"];
-      NSArray *options = [specifier propertyForKey:@"options"];
+      NSArray *optionArray = [specifier propertyForKey:@"options"];
       NSString *localizationTable = [specifier propertyForKey:@"localizationTable"];
+      id cellValue = [specifier performGetter];
 
         //Create option views
-      for(NSDictionary *styleProperties in options) {
-        XXXStyleOptionView *optionView = [[XXXStyleOptionView alloc] initWithAppearanceOption:[styleProperties objectForKey:@"appearanceOption"]];
+      for(NSDictionary *styleProperties in optionArray) {
+        NSString *appearanceOption = [styleProperties objectForKey:@"appearanceOption"];
+        NSString *labelText = [styleProperties objectForKey:@"label"];
+        NSString *imageName = [styleProperties objectForKey:@"image"];
+        NSString *imageAltName = [styleProperties objectForKey:@"imageAlt"];
+
+        XXXStyleOptionView *optionView = [[XXXStyleOptionView alloc] initWithAppearanceOption:appearanceOption];
         optionView.delegate = self;
-        optionView.label.text = [bundle localizedStringForKey:[styleProperties objectForKey:@"label"] value:[styleProperties objectForKey:@"label"] table:localizationTable];
-        optionView.previewImage = [UIImage imageNamed:[styleProperties objectForKey:@"image"] inBundle:bundle compatibleWithTraitCollection:nil];
-        optionView.previewImageAlt = [UIImage imageNamed:[styleProperties objectForKey:@"imageAlt"] inBundle:bundle compatibleWithTraitCollection:nil];
-        optionView.highlighted = [optionView.appearanceOption isEqual:[specifier performGetter]];
+        optionView.label.text = [bundle localizedStringForKey:labelText value:labelText table:localizationTable];
+        optionView.previewImage = [UIImage imageNamed:imageName inBundle:bundle compatibleWithTraitCollection:nil];
+        optionView.previewImageAlt = [UIImage imageNamed:imageAltName inBundle:bundle compatibleWithTraitCollection:nil];
+        optionView.highlighted = [optionView.appearanceOption isEqual:cellValue];
         optionView.translatesAutoresizingMaskIntoConstraints = NO;
+
         [optionViewArray addObject:optionView];
       }
 

@@ -127,8 +127,8 @@
   }
 
     //Update option if it's selected
-  -(void)updateViewForOption:(id)style {
-    self.highlighted = [style isEqualToString:_appearanceOption];
+  -(void)updateViewForOption:(id)option {
+    self.highlighted = [option isEqualToString:_appearanceOption];
   }
 
     //Fade image in/out during different states of press gesture
