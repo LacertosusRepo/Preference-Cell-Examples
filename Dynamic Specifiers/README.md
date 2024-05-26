@@ -157,10 +157,10 @@
 
       if(shouldHide) {
         return 0;
-      } 
+      }
     }
+      if ([dynamicSpecifier propertyForKey:@"height"] != 0) return [[dynamicSpecifier propertyForKey:@"height"] doubleValue];
   }
-
   return UITableViewAutomaticDimension;
 }
 ```
